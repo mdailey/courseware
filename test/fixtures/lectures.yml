@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  course_id: 1
+  number: 1
+  topics: MyText
+  readings: MyText
+
+two:
+  course_id: 1
+  number: 1
+  topics: MyText
+  readings: MyText

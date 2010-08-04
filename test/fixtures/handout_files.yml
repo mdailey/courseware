@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  handout_id: 1
+  file_data: 
+
+two:
+  handout_id: 1
+  file_data: 

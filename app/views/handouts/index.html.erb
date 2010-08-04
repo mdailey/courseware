@@ -1,0 +1,20 @@
+
+<h3>Handouts</h3>
+
+<%= render_blurb(@blurb) %>
+
+<table>
+  <tr class="tableheading">
+    <th class="handoutnumber">handout #</th>
+    <th class="handouttopic">subject</th>
+    <th class="handoutfile">file</th>
+  </tr>
+
+  <% for h in @handouts.sort { |h1,h2| h1.number <=> h2.number } %>
+    <tr class="<%= cycle('odd', 'even') %>">
+      <td class="handoutnumber"><%=h h.number %></td>
+      <td class="handouttopic"><%=h h.topic %></td>
+      <td class="handoutfile"><%= link_to (h h.file_label), course_handout_path(@course,h) %></td>
+    </tr>
+  <% end %>
+</table>

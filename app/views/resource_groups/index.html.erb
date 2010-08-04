@@ -1,0 +1,19 @@
+
+<h3>Resources</h3>
+
+<%= render_blurb(@blurb) %>
+
+<ul class="resourcelist">
+  <% for r in @course_resources.sort { |r1,r2| r1.order <=> r2.order } %>
+    <li>
+      <%= sanitize r.resource_group.title %>
+      <ul class="resourcelist">
+        <% for rl in r.resource_group.resources %>
+          <li>
+            <%= sanitize rl.link %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+</ul>

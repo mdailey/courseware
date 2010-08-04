@@ -1,0 +1,34 @@
+
+<h3>Course description</h3>
+
+<%= sanitize @course.description %>
+
+<h3>Basic information</h3>
+
+<p>
+  <b><%= @instructors.size > 1 ? 'Instructors' : 'Instructor' %>:</b> <%=h sorted_names(@instructors) %><br/>
+  <% if @tas.size > 0 %>
+    <b><%= @tas.size > 1 ? 'Teaching assistants' : 'Teaching assistant' %>:</b> <%=h sorted_names(@tas) %><br/>
+  <% end %>
+  <b>Room:</b> <%=h @course.rooms %><br/>
+  <b>Time:</b> <%=h @course.days_times %><br/>
+</p>
+
+<h3>Announcements</h3>
+
+<% if @course.announcements.size > 0 %>
+  <table>
+    <tr class="tableheading">
+      <th class="announcementdate">date</th>
+      <th class="announcementmessage">message</th>
+    </tr>
+    <% for a in @course.announcements.sort { |a1,a2| a1.date <=> a2.date } %>
+      <tr class="<%= cycle('odd', 'even')%>">
+        <td class="announcementdate"><%= h a.date %></td>
+        <td class="announcementmessage"><%= h a.text %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p><i>None as of yet.</i></p>
+<% end %>

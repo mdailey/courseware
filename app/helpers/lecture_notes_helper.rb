@@ -1,0 +1,2 @@
+module LectureNotesHelper
+end

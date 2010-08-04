@@ -1,0 +1,20 @@
+
+<h3>Lecture notes</h3>
+
+<%= render_blurb(@blurb) %>
+
+<table>
+  <tr class="tableheading">
+    <th class="lecturenotenumber">lecture note #</th>
+    <th class="lecturenotetopic">topics</th>
+    <th class="lecturenotefile">file</th>
+  </tr>
+
+  <% for l in @lecture_notes.sort { |l1,l2| l1.number <=> l2.number } %>
+    <tr class="<%= cycle('odd', 'even') %>">
+      <td class="lecturenotenumber"><%=h l.number %></td>
+      <td class="lecturenotetopic"><%=h l.topic %></td>
+      <td class="lecturenotefile"><%= link_to (h l.file_label), course_lecture_note_path(@course,l) %></td>
+    </tr>
+  <% end %>
+</table>

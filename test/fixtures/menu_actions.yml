@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  course_id: 1
+  order: 1
+  tag: MyString
+  action: MyString
+  path: MyString
+
+two:
+  course_id: 1
+  order: 1
+  tag: MyString
+  action: MyString
+  path: MyString

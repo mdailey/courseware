@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  course_id: 1
+  resource_group_id: 1
+  order: 1
+
+two:
+  course_id: 1
+  resource_group_id: 1
+  order: 1

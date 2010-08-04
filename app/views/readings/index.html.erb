@@ -1,0 +1,33 @@
+
+<h3>Reading materials</h3>
+
+<%= render_blurb(@blurb) %>
+
+<table>
+  <tr class="tableheading">
+    <th class="readingcover">cover</th>
+    <th class="readingstatus">status</th>
+    <th class="readingbibinfo">bibliographic information</th>
+  </tr>
+
+  <% for r in @course_readings.sort { |r1,r2| sort_string( r1.reading ) <=> sort_string( r2.reading ) } %>
+    <tr class="<%= cycle('odd', 'even') %>">
+      <td class="readingcover">
+        <% if r.reading.image_url and r.reading.image_url.length > 0 %>
+          <% if r.reading.sales_info_url %>
+            <a href="<%=h r.reading.sales_info_url %>">
+          <% end %>
+          <img class="readingimg" src="<%=h BOOK_IMAGE_URL_PREFIX + '/' + r.reading.image_url %>"/>
+          <% if r.reading.sales_info_url %>
+            </a>
+          <% end %>
+        <% else %>
+          No cover available.
+        <% end %>
+      </td>
+      <td class="readingstatus"><%= r.required ? 'required' : 'optional' %></td>
+      <td class="readingbibinfo"><%= sanitize bibinfo( r.reading ) %></td>
+    </tr>
+  <% end %>
+</table>
+

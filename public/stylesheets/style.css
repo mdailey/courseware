@@ -1,0 +1,334 @@
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #000000;
+  background: #cccccc;
+  width: 800px;
+  margin: 0 auto;
+}
+
+body, p, ol, ul, td {
+  font-family: arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+pre {
+  background-color: #eeeeee;
+  padding: 10px;
+  font-size: 11px;
+}
+
+h2, h3 {
+  font-size: 1.2em;
+  color: #990000;
+  background: inherit;
+  padding-bottom: 10px;
+}
+
+p {
+  padding-bottom: 10px;
+}
+
+ol, ul {
+  margin-left: 15px;
+  padding-bottom: 10px;
+}
+
+table ol, table ul {
+  padding-bottom: 0;
+}
+
+td {
+  padding: 5px;
+}
+
+a:link {
+  color: #990000; 
+  background: inherit;
+  text-decoration: underline;
+}
+
+a:focus, a:hover, a:active {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #666600; 
+  background: inherit;
+}
+
+.fieldWithErrors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+#hdr {
+  height: 75px;
+  border: solid #000000;
+  border-width: 1px;
+  background: #ffffcc;
+  color: #000000;
+  margin: 0;
+}
+
+#hdrimg {
+  float: right;
+}
+
+#hdr h2 {
+  font-size: 2em;
+  padding: 10px;
+  color: #990000;
+  background: inherit;
+}
+
+#hdr h2 a, #hdr h2 a:link, #hdr h2 a:visited {
+  color: #990000;
+  background: inherit;
+  text-decoration: none;
+}
+
+#hdr h3 {
+  font-size: 1em;
+  padding-left: 10px;
+  color: #000000;
+  background: inherit;
+}
+
+#hdr h3 a, #hdr h3 a:link, #hdr h3 a:visited {
+  color: #000000;
+  background: inherit;
+  text-decoration: none;
+}
+
+#bar {
+  height: 5px;
+  background: #990000;
+  color: #000000;
+  border: solid #000000;  
+  border-width: 0 1px 1px 1px;
+}
+
+#contentwrapper {
+  float: left;
+  border: solid #000000;  
+  border-width: 0 1px 0 1px;
+}
+
+#content {
+  width: 598px;
+  margin-left: 180px;
+  padding: 10px;
+}
+
+#lcol {
+  float: left;
+  width: 179px;
+  color: #000000;
+  margin: 0;
+  padding: 0;
+}
+
+#ftr {
+  clear: both;
+  color: #000;
+  border: solid #000;
+  border-width: 1px;
+  background: #ffffcc;
+  padding: 0;
+}
+
+#copyright {
+  padding: 5px;
+}
+
+#ftrimage {
+  float: right;
+  padding: 2px;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  background-color: #cc0000;
+  color: #ffffff;
+}
+
+#errorExplanation p {
+  color: #333333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: square;
+}
+
+#lcol a, #lcol a:link, #lcol a:visited {
+  color: #000000; 
+  background: inherit;
+  text-decoration: none;
+}
+
+#lcol a:focus, #lcol a:hover, #lcol a:active {
+  color: #000000; 
+  background: inherit;
+  text-decoration: underline;
+}
+
+#lcol ul {
+  padding: 10px;
+  margin: 0;
+  list-style: none;
+}
+
+#lcol li {
+  font-size: 0.9em;
+  margin-left: 15px;
+  padding-left: 0px;
+  text-indent: -4px;
+}
+
+#lcol li.selected {
+  list-style-type: square;
+}
+
+#lcol li.edit a, #lcol li.user a {
+  color: #bb2222;
+}
+
+#lcol li.courselist a {
+  color: #bb2222;
+}
+
+tr.tableheading {
+  background: #999999;
+}
+
+th.lecturenumber, td.lecturenumber {
+  width: 70px;
+  text-align: center;
+}
+
+th.lecturedate, td.lecturedate {
+  width: 80px;
+  text-align: center;
+}
+
+th.lecturetopic, td.lecturetopic {
+  width: 180px;
+}
+
+th.lecturereadings, td.lecturereadings {
+  width: 240px;
+}
+
+tr.odd {
+  background: #ebebeb;
+}
+
+tr.even {
+  background: #d0d0d0;
+}
+
+th.announcementdate, td.announcementdate {
+  width: 80px;
+}
+
+th.announcementmessage, td.announcementmessage {
+  width: 400px;
+}
+
+th.lecturenotenumber, td.lecturenotenumber, th.handoutnumber, td.handoutnumber {
+  width: 100px;
+  text-align: center;
+}
+
+th.lecturenotetopic, td.lecturenotetopic, th.handouttopic, td.handouttopic {
+  width: 300px;
+}
+
+th.lecturenotefile, td.lecturenotefile, th.handoutfile, td.handoutfile {
+  width: 60px;
+  text-align: center;
+}
+
+th.readingcover, td.readingcover {
+  width: 140px;
+}
+
+img.readingimg {
+  width: 130px;
+  height: 200px;
+}
+
+th.readingstatus, td.readingstatus {
+  width: 60px;
+  text-align: center;
+}
+
+th.readingbibinfo, td.readingbibinfo {
+  width: 340px;
+}
+
+th.examnumber, td.examnumber {
+  width: 60px;
+  text-align: center;
+}
+
+th.examplace, td.examplace {
+  width: 175px;
+  text-align: center;
+}
+
+th.examtitle, td.examtitle {
+  width: 150px;
+  text-align: center;
+}
+
+th.examdate, td.examdate {
+  width: 160px;
+  text-align: center;
+}
+
+th.courselistcourse, td.courselistcourse {
+  width: 400px;
+}
+
+th.courselistwhen, td.courselistwhen {
+  width: 100px;
+  text-align: center;
+}
+
+th.assignmentnumber, td.assignmentnumber {
+  width: 80px;
+  text-align: center;
+}
+
+th.assignmenttopic, td.assignmenttopic {
+  width: 250px;
+}
+
+th.assignmentfile, td.assignmentfile {
+  width: 60px;
+  text-align: center;
+}

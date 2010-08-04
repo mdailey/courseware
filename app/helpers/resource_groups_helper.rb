@@ -1,0 +1,2 @@
+module ResourceGroupsHelper
+end

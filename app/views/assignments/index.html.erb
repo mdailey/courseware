@@ -1,0 +1,28 @@
+
+<h3>Assignments</h3>
+
+<%= render_blurb(@blurb) %>
+
+<% has_solns = @assignments.collect {|a| a.soln_fname }.empty? %>
+
+<table>
+  <tr class="tableheading">
+    <th class="assignmentnumber">assignment #</th>
+    <th class="assignmenttopic">subject</th>
+    <th class="assignmentfile">file</th>
+    <% if has_solns %>
+      <th class="assignmentfile">solution</th>
+    <% end %>
+  </tr>
+
+  <% for a in @assignments.sort { |a1,a2| a1.number <=> a2.number } %>
+    <tr class="<%= cycle('odd', 'even') %>">
+      <td class="assignmentnumber"><%=h a.number %></td>
+      <td class="assignmenttopic"><%=h a.title %></td>
+      <td class="assignmentfile"><%= link_to (h a.ps_flabel), course_assignment_path(@course,a) %></td>
+      <% if has_solns %>
+        <td class="assignmentfile"><%= link_to (h a.soln_flabel), course_assignment_path(@course,a) + '/soln' %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

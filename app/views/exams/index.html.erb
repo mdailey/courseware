@@ -1,0 +1,23 @@
+
+<h3>Exams</h3>
+
+<%= render_blurb(@blurb) %>
+
+<table>
+  <tr class="tableheading">
+    <th class="examnumber">exam #</th>
+    <th class="examtitle">exam</th>
+    <th class="examplace">place</th>
+    <th class="examdate">date</th>
+    
+  </tr>
+
+  <% for e in @exams.sort { |e1,e2| e1.number <=> e2.number } %>
+    <tr class="<%= cycle('odd', 'even') %>">
+      <td class="examnumber"><%=h e.number %></td>
+      <td class="examtitle"><%=h e.title %></td>
+      <td class="examplace"><%=h e.place %></td>
+      <td class="examdate"><%=h e.date %></td>
+    </tr>
+  <% end %>
+</table>

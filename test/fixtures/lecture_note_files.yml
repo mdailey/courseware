@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  lecture_note_id: 1
+  file_data: 
+
+two:
+  lecture_note_id: 1
+  file_data: 
