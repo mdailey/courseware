@@ -1,10 +1,6 @@
 
 <h2>Course list</h2>
 
-<% if authorized?(:new, Course) %>
-  <p><%= link_to('Add a new course', new_course_path) %></p>
-<% end %>
-
 <table>
   <tr class="tableheading">
     <th class="courselistcourse">Course</th>
@@ -15,7 +11,7 @@
     <tr class="<%= cycle('odd', 'even') %>">
       <td class="courselistcourse"><a href="<%= course_path( course ) %>"><%=h course.code %>: <%=h course.name %></a></td>
       <td class="courselistwhen"><%= h course.semester %> <%=h course.year %></td>
-      <% if authorized?(:delete, Course) %>
+      <% if authorized?(:delete, @course) %>
         <td><%= link_to 'Delete', course, :confirm => 'Are you sure?', :method => :delete %></td>
       <% end %>
     </tr>

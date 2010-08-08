@@ -19,7 +19,11 @@ class ApplicationController < ActionController::Base
   end
 
   def authorized?(action, resource=nil)
-    self.class.user_authorized_for? current_user, {:action => action}, binding
+    if resource and resource.is_a? Class
+      resource.user_authorized_for? current_user, {:action => action}, binding
+    else
+      self.class.user_authorized_for? current_user, {:action => action}, binding
+    end
   end
   
   private

@@ -1,5 +1,5 @@
 
-<% @title = 'Courses: ' + controller.action_name %>
+<% @title = 'New course' %>
 
 <% form_for(@course) do |f| %>
   <%= f.error_messages %>
@@ -36,5 +36,3 @@
     <%= f.submit 'Create' %>
   </p>
 <% end %>
-
-<%= link_to 'Back', courses_path %>

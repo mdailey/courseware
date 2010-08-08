@@ -29,7 +29,7 @@ SimpleNavigation::Configuration.run do |navigation|
     # url - the address that the generated item links to. You can also use url_helpers (named routes, restful routes helper, url_for etc.)
     # options - can be used to specify attributes that will be included in the rendered navigation item (e.g. id, class etc.)
 
-    if @course and @menu_actions and @menu_actions.size > 0
+    if @course and @course.id and @menu_actions and @menu_actions.size > 0
 
       @menu_actions.sort { |m1,m2| m1.order <=> m2.order }.each do |m|
         path =
@@ -49,7 +49,7 @@ SimpleNavigation::Configuration.run do |navigation|
         #sub_nav.item :key_2_1, 'name', 'url2-1'
       #end
       
-    elsif @course
+    elsif @course and @course.id
       
       primary.item :home, 'Home', course_path( @course )
       primary.item :lectures, 'Syllabus', course_lectures_path( @course )
@@ -69,7 +69,11 @@ SimpleNavigation::Configuration.run do |navigation|
       #primary.item :register, 'Register', signup_path, { :class => 'user' }
     end
     
-    if @course and authorized?( :edit, @course )
+    if authorized?( :new, CoursesController )
+      primary.item :new_course, 'New course', new_course_path, { :class => 'edit' }
+    end
+      
+    if @course and @course.id and authorized?( :edit, @course )
       primary.item :edit_course, 'Edit course info', edit_course_path( @course ), :class => 'edit'
     end
 

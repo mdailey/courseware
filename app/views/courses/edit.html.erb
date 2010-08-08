@@ -1,40 +1,11 @@
 
-<% @title = 'Courses: ' + controller.action_name %>
+<% @title = 'Edit course' %>
 
 <h3>Edit course info</h3>
 
-<% form_for(@course) do |f| %>
-  <%= f.error_messages %>
-
+<% form_for(@course) do |form| %>
+  <%= render :partial => "course_form_fields", :locals  => { :form => form } %>
   <p>
-    <%= f.label :code %><br />
-    <%= f.text_field :code %>
-  </p>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :semester %><br />
-    <%= f.text_field :semester %>
-  </p>
-  <p>
-    <%= f.label :year %><br />
-    <%= f.text_field :year %>
-  </p>
-  <p>
-    <%= f.label :description %><br />
-    <%= f.text_area :description %>
-  </p>
-  <p>
-    <%= f.label :rooms %><br />
-    <%= f.text_field :rooms %>
-  </p>
-  <p>
-    <%= f.label :days_times %><br />
-    <%= f.text_field :days_times %>
-  </p>
-  <p>
-    <%= f.submit 'Update' %>
+    <%= form.submit 'Update' %>
   </p>
 <% end %>

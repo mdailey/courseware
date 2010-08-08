@@ -1,6 +1,10 @@
 module CoursesHelper
   def sorted_names(people)
-    people.sort {|i1,i2| i1.lastname <=> i2.lastname}.collect {|i| i.firstname + ' ' + i.lastname }.join(', ')
+    (sorted_people(people)).collect {|i| i.firstname + ' ' + i.lastname }.join(', ')
+  end
+  
+  def sorted_people(people)
+    people.sort {|i1,i2| i1.lastname <=> i2.lastname}
   end
   
   def sort_field(course)
