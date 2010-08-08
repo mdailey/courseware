@@ -332,3 +332,7 @@ th.assignmentfile, td.assignmentfile {
   width: 60px;
   text-align: center;
 }
+
+div.instructors {
+  background: #d0d0d0;
+}

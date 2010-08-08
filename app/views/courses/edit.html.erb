@@ -4,8 +4,15 @@
 <h3>Edit course info</h3>
 
 <% form_for(@course) do |form| %>
-  <%= render :partial => "course_form_fields", :locals  => { :form => form } %>
-  <p>
-    <%= form.submit 'Update' %>
-  </p>
+  <%= render :partial => "course_form_fields", :locals  => { :form => form, :submit => 'Update' } %>
 <% end %>
+
+<script>
+  function remove(id)
+  {
+    var formDiv = document.getElementById('edit_course_<%=h @course.id %>');
+    var child = document.getElementById(id);
+    if (formDiv) formDiv.removeChild(child);
+  } 
+</script>
+

@@ -30,6 +30,8 @@ class CoursesController < ApplicationController
   # GET /courses/new.xml
   def new
     @course = Course.new
+    @course.course_instructors.build :role => 'main'
+    @course.course_instructors.build :role => 'ta'
 
     respond_to do |format|
       format.html # new.html.erb
@@ -39,9 +41,7 @@ class CoursesController < ApplicationController
 
   # GET /courses/1/edit
   def edit
-    @course = Course.find(params[:id])
-    @title = 'Courses: ' + action_name
-    @menu_actions = @course.menu_actions
+    setup_for_edit
   end
 
   # POST /courses
@@ -64,12 +64,19 @@ class CoursesController < ApplicationController
   # PUT /courses/1.xml
   def update
     @course = Course.find(params[:id])
+    fix_instructors(params)
 
     respond_to do |format|
       if @course.update_attributes(params[:course])
-        format.html { redirect_to(@course, :notice => 'Course was successfully updated.') }
+        format.html {
+          if params[:commit] != 'Update'
+            redirect_to(edit_course_path(@course), :notice => 'Course was successfully updated.')
+          else
+            redirect_to(@course, :notice => 'Course was successfully updated.')
+          end }
         format.xml  { head :ok }
       else
+        setup_for_edit
         format.html { render :action => "edit" }
         format.xml  { render :xml => @course.errors, :status => :unprocessable_entity }
       end
@@ -115,4 +122,19 @@ class CoursesController < ApplicationController
   def strip_headers( s )
     s.gsub /^<![^>]*>/, ''
   end
+
+  def fix_instructors(params)
+    if params[:course] and !params[:course][:existing_course_instructor_attributes]
+      params[:course][:existing_course_instructor_attributes] = {}
+    end
+  end
+  
+  def setup_for_edit
+    @course = Course.find(params[:id])
+    @course.course_instructors.build :role => 'main'
+    @course.course_instructors.build :role => 'ta'
+    @title = 'Courses: ' + action_name
+    @menu_actions = @course.menu_actions
+  end
+
 end

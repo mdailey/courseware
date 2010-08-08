@@ -16,7 +16,11 @@ INSTITUTE_URL = 'http://www.ait.ac.th'
 INSTITUTE_LOGO = 'ait-globe.gif'
 
 # Place where static HTML files are placed for inclusion
-STATIC_FILE_PATH = '/home/mdailey/static'
+if ENV['RAILS_ENV'] == 'production'
+  STATIC_FILE_PATH = '/home/fidji/mdailey/static'
+else
+  STATIC_FILE_PATH = '/home/mdailey/static'
+end
 
 # Place where book images are stored
 BOOK_IMAGE_URL_PREFIX = '/~mdailey/class/readings'
