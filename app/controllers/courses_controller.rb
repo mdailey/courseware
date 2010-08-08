@@ -30,8 +30,7 @@ class CoursesController < ApplicationController
   # GET /courses/new.xml
   def new
     @course = Course.new
-    @course.course_instructors.build :role => 'main'
-    @course.course_instructors.build :role => 'ta'
+    setup_for_new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -50,10 +49,19 @@ class CoursesController < ApplicationController
     @course = Course.new(params[:course])
 
     respond_to do |format|
+      logger.debug "About to attempt to save"
+      logger.debug @course.inspect
+      logger.debug @course.course_instructors.inspect
       if @course.save
-        format.html { redirect_to(@course, :notice => 'Course was successfully created.') }
+        format.html {
+          if params[:commit] != 'Create'
+            redirect_to(edit_course_path(@course), :notice => 'Course was successfully created.')
+          else
+            redirect_to(@course, :notice => 'Course was successfully created.')
+          end }
         format.xml  { render :xml => @course, :status => :created, :location => @course }
       else
+        setup_for_new
         format.html { render :action => "new" }
         format.xml  { render :xml => @course.errors, :status => :unprocessable_entity }
       end
@@ -135,6 +143,11 @@ class CoursesController < ApplicationController
     @course.course_instructors.build :role => 'ta'
     @title = 'Courses: ' + action_name
     @menu_actions = @course.menu_actions
+  end
+
+  def setup_for_new
+    @course.course_instructors.build :role => 'main'
+    @course.course_instructors.build :role => 'ta'
   end
 
 end

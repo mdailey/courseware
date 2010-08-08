@@ -3,7 +3,7 @@ class Course < ActiveRecord::Base
   has_many :lectures
   has_many :announcements
   has_many :blurbs
-  has_many :course_instructors
+  has_many :course_instructors, :autosave => true
   has_many :instructors, :through => :course_instructors, :source => :person
   has_many :lecture_notes
   has_many :handouts
@@ -15,14 +15,20 @@ class Course < ActiveRecord::Base
   has_many :assignments
   
   validates_associated :course_instructors
+  validates_presence_of :year
+  validates_presence_of :semester
   
   def new_course_instructor_attributes=(course_instructor_attributes)
     course_instructor_attributes.each do |attributes|
       person_attributes = attributes[:person]
       attributes[:person] = nil
       if person_attributes and person_attributes[:lastname] and person_attributes[:lastname].length > 0
-        p = Person.new(person_attributes)
-        if p.save
+        p = Person.find_by_firstname_and_lastname(person_attributes[:firstname],person_attributes[:lastname])
+        if !p
+          p = Person.new(person_attributes)
+          p.save
+        end
+        if p and p.id
           attributes[:person_id] = p.id.to_s
         end
       end
@@ -30,9 +36,8 @@ class Course < ActiveRecord::Base
         course_instructors.build(attributes)
       end
     end
+    course_instructors.each { |ci| ci.course = self }
   end
-
-  after_update :save_course_instructors
 
   def existing_course_instructor_attributes=(course_instructor_attributes)
     course_instructors.reject(&:new_record?).each do |course_instructor|
@@ -46,6 +51,8 @@ class Course < ActiveRecord::Base
   end
 
   def save_course_instructors
+    logger.debug "Saving"
+    logger.debug course_instructors.inspect
     course_instructors.each do |course_instructor|
       course_instructor.save(false)
     end
