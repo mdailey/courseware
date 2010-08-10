@@ -1,9 +1,12 @@
 ActionController::Routing::Routes.draw do |map|
 
+  map.edit_course_readings 'courses/:course_id/readings/edit', :controller => 'readings', :action => 'edit', :conditions => { :method => :get }
+  map.connect 'courses/:course_id/readings', :controller => 'readings', :action => 'update', :conditions => { :method => :put }
+  
   map.resources :courses, :has_many => [ :menu_actions, :lectures, :lecture_notes, :handouts, :exams, :readings, :resource_groups, :assignments ]
 
   map.connect 'courses/:id/:static_action', :controller => 'courses', :action => 'static'
-
+  
   # For restful-authentication plugin
     
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'

@@ -10,7 +10,7 @@
     <th class="readingbibinfo">bibliographic information</th>
   </tr>
 
-  <% for r in @course_readings.sort { |r1,r2| sort_string( r1.reading ) <=> sort_string( r2.reading ) } %>
+  <% for r in sorted_readings(@course_readings) %>
     <tr class="<%= cycle('odd', 'even') %>">
       <td class="readingcover">
         <% if r.reading.image_url and r.reading.image_url.length > 0 %>

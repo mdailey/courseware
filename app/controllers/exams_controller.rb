@@ -4,7 +4,6 @@ class ExamsController < ApplicationController
   def index
     @course = Course.find(params[:course_id])
     @exams = @course.exams
-    @menu_actions = @course.menu_actions
     @blurb = @course.exams_blurb
 
     respond_to do |format|

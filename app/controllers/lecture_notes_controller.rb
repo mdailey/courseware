@@ -6,7 +6,6 @@ class LectureNotesController < ApplicationController
   def index
     @course = Course.find(params[:course_id])
     @lecture_notes = @course.lecture_notes
-    @menu_actions = @course.menu_actions
     @blurb = @course.lecture_notes_blurb
 
     respond_to do |format|

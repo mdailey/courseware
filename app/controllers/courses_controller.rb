@@ -18,7 +18,6 @@ class CoursesController < ApplicationController
     @title = 'Courses: ' + action_name
     @instructors = @course.main_instructors
     @tas = @course.tas
-    @menu_actions = @course.menu_actions
 
     respond_to do |format|
       format.html # show.html.erb
@@ -106,7 +105,6 @@ class CoursesController < ApplicationController
   # GET /courses/1/paper_list
   def static
     @course = Course.find(params[:id])
-    @menu_actions = @course.menu_actions
     static_action = params[:static_action]
     menu_action = @course.menu_actions.select { |mi| mi.action == static_action }.first
     if menu_action
@@ -142,7 +140,6 @@ class CoursesController < ApplicationController
     @course.course_instructors.build :role => 'main'
     @course.course_instructors.build :role => 'ta'
     @title = 'Courses: ' + action_name
-    @menu_actions = @course.menu_actions
   end
 
   def setup_for_new

@@ -29,36 +29,38 @@ SimpleNavigation::Configuration.run do |navigation|
     # url - the address that the generated item links to. You can also use url_helpers (named routes, restful routes helper, url_for etc.)
     # options - can be used to specify attributes that will be included in the rendered navigation item (e.g. id, class etc.)
 
-    if @course and @course.id and @menu_actions and @menu_actions.size > 0
-
-      @menu_actions.sort { |m1,m2| m1.order <=> m2.order }.each do |m|
+    default_menu_actions = []
+    menu_actions = []
+    
+    # Options for course views
+        
+    if @course and @course.id
+      
+      menu_actions = @course.menu_actions
+      
+      default_menu_actions = [
+        ( MenuAction.new :order => 1, :tag => 'Home', :action => 'home' ),
+        ( MenuAction.new :order => 2, :tag => 'Syllabus', :action => 'syllabus' ),
+        ( MenuAction.new :order => 3, :tag => 'Lecture notes', :action => 'lecture_notes' ),
+        ( MenuAction.new :order => 4, :tag => 'Handouts', :action => 'handouts' ),
+        ( MenuAction.new :order => 5, :tag => 'Assignments', :action => 'assignments' ),
+        ( MenuAction.new :order => 6, :tag => 'Exams', :action => 'exams' ),
+        ( MenuAction.new :order => 7, :tag => 'Readings', :action => 'readings' ),
+        ( MenuAction.new :order => 8, :tag => 'Resources', :action => 'resources' )
+      ]
+      
+      if menu_actions.nil? or menu_actions.size == 0
+        menu_actions = default_menu_actions
+      end
+    
+      menu_actions.sort { |m1,m2| m1.order <=> m2.order }.each do |m|
         path =
           case m.action
           when 'home' then course_path( @course )
-          when 'lectures' then course_lectures_path( @course )
-          when 'lecture_notes' then course_lecture_notes_path( @course )
-          when 'handouts' then course_handouts_path( @course )
           else course_path( @course ) + '/' + m.action.parameterize
           end
         primary.item m.action, m.tag, path
       end
-      
-      # Add an item which has a sub navigation (same params, but with block)
-      #primary.item :key_2, 'name', 'url2', options do |sub_nav|
-        # Add an item to the sub navigation (same params again)
-        #sub_nav.item :key_2_1, 'name', 'url2-1'
-      #end
-      
-    elsif @course and @course.id
-      
-      primary.item :home, 'Home', course_path( @course )
-      primary.item :lectures, 'Syllabus', course_lectures_path( @course )
-      primary.item :lecture_notes, 'Lecture notes', 'lecture_notes'
-      primary.item :handouts, 'Handouts', 'handouts'
-      primary.item :assignments, 'Assignments', 'assignments'
-      primary.item :exams, 'Exams', 'exams'
-      primary.item :readings, 'Readings', 'readings'
-      primary.item :resources, 'Resources', 'resource_groups'
       
     end
 
@@ -72,15 +74,30 @@ SimpleNavigation::Configuration.run do |navigation|
     if authorized?( :new, CoursesController )
       primary.item :new_course, 'New course', new_course_path, { :class => 'edit' }
     end
-      
+
+    # Options for editing course views
+     
     if @course and @course.id and authorized?( :edit, @course )
-      primary.item :edit_course, 'Edit course info', edit_course_path( @course ), :class => 'edit'
+      menu_actions.sort { |m1,m2| m1.order <=> m2.order }.each do |m|
+        if default_menu_actions.select { |dm| dm.action == m.action }.size > 0
+          action = "edit_#{m.action}"
+          tag = h("Edit #{m.tag.downcase}")
+          path = course_path( @course ) + ( m.action == 'home' ? '' : ('/' + m.action.parameterize)) + '/edit'
+          primary.item action, tag, path, :class => 'edit'
+        end
+      end
     end
 
     if logged_in?
       primary.item :logout, 'Logout', logout_path, { :class => 'user' }
     end
     
+    # Add an item which has a sub navigation (same params, but with block)
+    #primary.item :key_2, 'name', 'url2', options do |sub_nav|
+      # Add an item to the sub navigation (same params again)
+      #sub_nav.item :key_2_1, 'name', 'url2-1'
+    #end
+      
     # You can also specify a condition-proc that needs to be fullfilled to display an item.
     # Conditions are part of the options. They are evaluated in the context of the views,
     # thus you can use all the methods and vars you have available in the views.

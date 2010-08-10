@@ -4,7 +4,6 @@ class ResourceGroupsController < ApplicationController
   def index
     @course = Course.find(params[:course_id])
     @course_resources = @course.course_resources
-    @menu_actions = @course.menu_actions
     @blurb = @course.resources_blurb
 
     respond_to do |format|

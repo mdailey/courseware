@@ -17,7 +17,27 @@ class Course < ActiveRecord::Base
   validates_associated :course_instructors
   validates_presence_of :year
   validates_presence_of :semester
-  
+
+  def new_course_reading_attributes=(course_reading_attributes)
+    course_reading_attributes.each do |attributes|
+      reading_attributes = attributes[:reading]
+      attributes[:reading] = nil
+      if reading_attributes and reading_attributes[:title] and reading_attributes[:title].length > 0
+        r = Reading.find_by_title_and_edition(reading_attributes[:title],reading_attributes[:edition])
+        if !r
+          r = Reading.new(reading_attributes)
+          r.save
+        end
+        if r and r.id
+          attributes[:reading_id] = r.id.to_s
+        end
+      end
+      if attributes[:reading_id] and attributes[:reading_id].length > 0
+        course_readings.build(attributes)
+      end
+    end
+  end
+   
   def new_course_instructor_attributes=(course_instructor_attributes)
     course_instructor_attributes.each do |attributes|
       person_attributes = attributes[:person]
@@ -39,6 +59,19 @@ class Course < ActiveRecord::Base
     course_instructors.each { |ci| ci.course = self }
   end
 
+  def existing_course_reading_attributes=(course_reading_attributes)
+    logger.debug "Course reading attributes: #{course_reading_attributes}"
+    course_readings.reject(&:new_record?).each do |course_reading|
+      attributes = course_reading_attributes[course_reading.id.to_s]
+      logger.debug "  attributes: #{attributes}"
+      if attributes
+        course_reading.attributes = attributes
+      else
+        course_readings.delete(course_reading)
+      end
+    end
+  end
+  
   def existing_course_instructor_attributes=(course_instructor_attributes)
     course_instructors.reject(&:new_record?).each do |course_instructor|
       attributes = course_instructor_attributes[course_instructor.id.to_s]
@@ -71,9 +104,22 @@ class Course < ActiveRecord::Base
   end
   
   def blurb(course_page)
-    blurbs.select {|b| b.course_page == course_page}.collect {|b| b.contents}.first
+    blurbs.select {|b| b.course_page == course_page}.first
   end
   
+  def update_blurb(course_page,attributes)
+    bOld = blurb(course_page)
+    bNew = Blurb.new(attributes)
+    if bOld and bOld.contents != bNew.contents
+      blurbs.delete(bOld)
+    end
+    if !bOld or bOld.contents != bNew.contents
+      bNew.course_page = course_page
+      bNew.course_id = id
+      bNew.save
+    end
+  end
+    
   def lectures_blurb
     blurb('lectures')
   end
@@ -88,6 +134,10 @@ class Course < ActiveRecord::Base
   
   def readings_blurb
     blurb('readings')
+  end
+  
+  def readings_blurb=(attributes)
+    update_blurb('readings',attributes)
   end
   
   def resources_blurb

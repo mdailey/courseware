@@ -4,7 +4,6 @@ class AssignmentsController < ApplicationController
   def index
     @course = Course.find(params[:course_id])
     @assignments = @course.assignments
-    @menu_actions = @course.menu_actions
     @blurb = @course.assignments_blurb
 
     respond_to do |format|

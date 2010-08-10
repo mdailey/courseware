@@ -4,7 +4,6 @@ class HandoutsController < ApplicationController
   def index
     @course = Course.find(params[:course_id])
     @handouts = @course.handouts
-    @menu_actions = @course.menu_actions
     @blurb = @course.handouts_blurb
 
     respond_to do |format|

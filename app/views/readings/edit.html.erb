@@ -1,0 +1,31 @@
+
+<% @title = 'Edit readings' %>
+
+<h3>Edit readings</h3>
+
+<% readings = Reading.find(:all) %>
+
+<% form_for Reading, :url => course_readings_path(@course), :html => { :id => 'course_readings' } do |form| %>
+  <% fields_for "course[readings_blurb]", @blurb do |blurb_form| %>
+    <table>
+      <tr>
+        <td><%= blurb_form.label :contents, 'Blurb' %></td>
+        <td><%= blurb_form.text_area :contents, :size => "40x3"%></td>
+      </tr>
+    </table>
+  <% end %>
+  <br/>
+  <br/>
+  Current readings:<br/><br/>
+  <%= render :partial => "course_reading", :collection => @course.course_readings, :locals => { :readings => readings } %>
+<% end %>
+
+<script>
+  function remove(id)
+  {
+    var formDiv = document.getElementById('course_readings');
+    var child = document.getElementById(id);
+    if (formDiv) formDiv.removeChild(child);
+  } 
+</script>
+
