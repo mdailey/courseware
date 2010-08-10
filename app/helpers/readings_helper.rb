@@ -36,7 +36,7 @@ module ReadingsHelper
   end
   
   def sorted_readings(readings)
-    readings.sort {|r1,r2| sort_string(r1) <=> sort_string(r2)}
+    readings.sort {|r1,r2| sort_string(r1.reading) <=> sort_string(r2.reading)}
   end
   
 end
