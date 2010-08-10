@@ -40,13 +40,13 @@ SimpleNavigation::Configuration.run do |navigation|
       
       default_menu_actions = [
         ( MenuAction.new :order => 1, :tag => 'Home', :action => 'home' ),
-        ( MenuAction.new :order => 2, :tag => 'Syllabus', :action => 'syllabus' ),
+        ( MenuAction.new :order => 2, :tag => 'Syllabus', :action => 'lectures' ),
         ( MenuAction.new :order => 3, :tag => 'Lecture notes', :action => 'lecture_notes' ),
         ( MenuAction.new :order => 4, :tag => 'Handouts', :action => 'handouts' ),
         ( MenuAction.new :order => 5, :tag => 'Assignments', :action => 'assignments' ),
         ( MenuAction.new :order => 6, :tag => 'Exams', :action => 'exams' ),
         ( MenuAction.new :order => 7, :tag => 'Readings', :action => 'readings' ),
-        ( MenuAction.new :order => 8, :tag => 'Resources', :action => 'resources' )
+        ( MenuAction.new :order => 8, :tag => 'Resources', :action => 'resource_groups' )
       ]
       
       if menu_actions.nil? or menu_actions.size == 0

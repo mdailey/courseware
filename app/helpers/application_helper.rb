@@ -9,10 +9,12 @@ module ApplicationHelper
   end
   
   def render_blurb( blurb )
-    if blurb and blurb.match /^\w*</
-      sanitize @blurb
-    elsif blurb
-      '<p>' + sanitize( blurb ) + '</p>'
+    if blurb and blurb.contents
+      if blurb.contents.match /^\w*</
+        sanitize @blurb.contents
+      else
+        '<p>' + sanitize( blurb.contents ) + '</p>'
+      end
     else
       ''
     end
