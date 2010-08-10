@@ -3,9 +3,9 @@
 one:
   course_id: 1
   date: 2010-07-29
-  text: MyText
+  text: MyText1
 
 two:
   course_id: 1
   date: 2010-07-29
-  text: MyText
+  text: MyText2

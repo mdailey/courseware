@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(:version => 20100802055954) do
   create_table "assignments", :force => true do |t|
     t.integer  "course_id"
     t.integer  "number"
-    t.integer  "title"
+    t.string   "title"
     t.string   "ps_flabel"
     t.string   "ps_fname"
     t.string   "soln_flabel"

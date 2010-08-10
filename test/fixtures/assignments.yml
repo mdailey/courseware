@@ -1,19 +1,21 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
+  id: 1
   course_id: 1
   number: 1
-  title: 1
-  ps_flabel: MyString
-  ps_fname: MyString
-  soln_flabel: MyString
-  soln_fname: MyString
+  title: Assign1
+  ps_flabel: PDF
+  ps_fname: hw1.pdf
+  soln_flabel: PDF
+  soln_fname: hw1_soln.pdf
 
 two:
+  id: 2
   course_id: 1
-  number: 1
-  title: 1
-  ps_flabel: MyString
-  ps_fname: MyString
-  soln_flabel: MyString
-  soln_fname: MyString
+  number: 2
+  title: Assign2
+  ps_flabel: PDF
+  ps_fname: hw2.pdf
+  soln_flabel: PDF
+  soln_fname:

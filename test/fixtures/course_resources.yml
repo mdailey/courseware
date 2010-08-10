@@ -7,5 +7,5 @@ one:
 
 two:
   course_id: 1
-  resource_group_id: 1
-  order: 1
+  resource_group_id: 2
+  order: 2

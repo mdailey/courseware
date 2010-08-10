@@ -1,9 +1,21 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  firstname: MyString
-  lastname: MyString
+  id: 1
+  firstname: John
+  lastname: Doe
 
 two:
-  firstname: MyString
-  lastname: MyString
+  id: 2
+  firstname: Jane
+  lastname: Smith
+
+three:
+  id: 3
+  firstname: Bob
+  lastname: Smith
+
+four:
+  id: 4
+  firstname: Jane
+  lastname: Doe

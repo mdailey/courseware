@@ -1,19 +1,21 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  name: MyString
+  id: 1
+  name: Course1
   code: MyString
   rooms: MyString
   days_times: MyString
   description: MyText
-  year: 1
-  semester: MyString
+  year: 2010
+  semester: August
 
 two:
-  name: MyString
+  id: 2
+  name: Course2
   code: MyString
   rooms: MyString
   days_times: MyString
   description: MyText
-  year: 1
-  semester: MyString
+  year: 2010
+  semester: January

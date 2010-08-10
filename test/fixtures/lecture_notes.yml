@@ -1,17 +1,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
+  id: 1
   course_id: 1
   number: 1
   topic: MyString
-  file_label: MyString
-  file_name: MyString
-  file_data: 
+  file_label: PDF
+  file_name: notes1.pdf
 
 two:
+  id: 2
   course_id: 1
-  number: 1
+  number: 2
   topic: MyString
-  file_label: MyString
-  file_name: MyString
-  file_data: 
+  file_label: PDF
+  file_name: notes2.pdf

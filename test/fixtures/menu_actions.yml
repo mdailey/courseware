@@ -3,13 +3,48 @@
 one:
   course_id: 1
   order: 1
-  tag: MyString
-  action: MyString
-  path: MyString
+  tag: Home
+  action: home
+  path: 
 
 two:
   course_id: 1
-  order: 1
-  tag: MyString
-  action: MyString
-  path: MyString
+  order: 2
+  tag: Schedule
+  action: lectures
+  path:
+
+three:
+  course_id: 1
+  order: 3
+  tag: Lecture notes
+  action: lecture_notes
+  path:
+
+four:
+  course_id: 1
+  order: 4
+  tag: Handouts
+  action: handouts
+  path:
+
+five:
+  course_id: 1
+  order: 5
+  tag: Resources
+  action: resource_groups
+  path:
+
+six:
+  course_id: 1
+  order: 6
+  tag: Paper list
+  action: paper_list
+  path:
+
+seven:
+  course_id: 1
+  order: 7
+  tag: readings
+  action: readings
+  path:

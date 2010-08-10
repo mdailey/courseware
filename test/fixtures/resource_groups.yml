@@ -1,7 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  title: MyString
+  id: 1
+  title: Group1
 
 two:
-  title: MyString
+  id: 2
+  title: Group2

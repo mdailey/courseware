@@ -2,10 +2,40 @@
 
 one:
   course_id: 1
-  course_page: MyString
+  course_page: lecture_notes
   contents: MyText
 
 two:
   course_id: 1
-  course_page: MyString
+  course_page: lectures
+  contents: MyText
+
+three:
+  course_id: 1
+  course_page: lectures
+  contents: MyText
+
+four:
+  course_id: 1
+  course_page: handouts
+  contents: MyText
+  
+five:
+  course_id: 1
+  course_page: readings
+  contents: MyText
+  
+six:
+  course_id: 1
+  course_page: resources
+  contents: MyText
+  
+seven:
+  course_id: 1
+  course_page: exams
+  contents: MyText
+  
+eight:
+  course_id: 1
+  course_page: assignments
   contents: MyText

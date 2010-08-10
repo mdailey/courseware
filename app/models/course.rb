@@ -14,9 +14,10 @@ class Course < ActiveRecord::Base
   has_many :exams
   has_many :assignments
   
-  validates_associated :course_instructors
   validates_presence_of :year
   validates_presence_of :semester
+  validates_presence_of :name
+  validates_presence_of :code
 
   def new_course_reading_attributes=(course_reading_attributes)
     course_reading_attributes.each do |attributes|

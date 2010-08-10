@@ -3,9 +3,19 @@
 one:
   course_id: 1
   person_id: 1
-  role: MyString
+  role: main
 
 two:
   course_id: 1
-  person_id: 1
-  role: MyString
+  person_id: 2
+  role: main
+
+three:
+  course_id: 1
+  person_id: 3
+  role: ta
+
+four:
+  course_id: 1
+  person_id: 4
+  role: ta
