@@ -23,7 +23,11 @@ else
 end
 
 # Place where book images are stored
-BOOK_IMAGE_URL_PREFIX = '/~mdailey/class/readings'
+if ENV['RAILS_ENV'] == 'production'
+  BOOK_IMAGE_URL_PREFIX = '/~mdailey/class/readings'
+else
+  BOOK_IMAGE_URL_PREFIX = '/images/readings'
+end
 
 # ActionMailer constants
 SITE_URL = 'localhost:3000'

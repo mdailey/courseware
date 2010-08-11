@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class AssignmentFileTest < ActiveSupport::TestCase
-  fixtures :courses, :assignments, :assignment_files
   
   def test_should_create_assignment_file
     assert_difference 'AssignmentFile.count' do

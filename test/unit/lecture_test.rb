@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class LectureTest < ActiveSupport::TestCase
-  fixtures :courses, :lectures
  
   def test_should_create_lecture
     assert_difference 'Lecture.count' do

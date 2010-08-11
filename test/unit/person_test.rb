@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class PersonTest < ActiveSupport::TestCase
-  fixtures :people
 
   def test_should_create_person
     assert_difference 'Person.count' do

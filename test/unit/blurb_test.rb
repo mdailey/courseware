@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class BlurbTest < ActiveSupport::TestCase
-  fixtures :courses, :blurbs
   
   def test_should_create_blurb
     assert_difference 'Blurb.count' do

@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class MenuActionTest < ActiveSupport::TestCase
-  fixtures :courses, :menu_actions
  
   def test_should_create_menu_action
     assert_difference 'MenuAction.count' do

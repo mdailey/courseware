@@ -17,7 +17,7 @@ class HandoutsController < ApplicationController
     @handout = @course.handouts.find(params[:id])
     file = @handout.handout_file
     if file
-      send_data decode64( file.file_data ), :filename => @handout.file_name, :type => mimetype(@handout.file_label)
+      send_data Base64.decode64( file.file_data ), :filename => @handout.file_name, :type => mimetype(@handout.file_label)
     else
       raise 'No file data for handout.'
     end

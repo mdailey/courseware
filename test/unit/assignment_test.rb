@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class AssignmentTest < ActiveSupport::TestCase
-  fixtures :courses, :assignments
   
   def test_should_create_assignment
     assert_difference 'Assignment.count' do

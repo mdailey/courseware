@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class CourseResourceTest < ActiveSupport::TestCase
-  fixtures :courses, :resource_groups, :resources, :course_resources
   
   def test_should_create_course_resource
     assert_difference 'CourseResource.count' do

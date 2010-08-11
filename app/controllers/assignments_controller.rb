@@ -17,7 +17,7 @@ class AssignmentsController < ApplicationController
     @assignment = @course.assignments.find(params[:id])
     file = @assignment.assignment_file
     if file
-      send_data decode64( file.file_data ), :filename => @assignment.ps_fname, :type => mimetype(@assignment.ps_flabel)
+      send_data Base64.decode64( file.file_data ), :filename => @assignment.ps_fname, :type => mimetype(@assignment.ps_flabel)
     else
       raise 'No file data for assignment.'
     end

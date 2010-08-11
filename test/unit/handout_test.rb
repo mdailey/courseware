@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class HandoutTest < ActiveSupport::TestCase
-  fixtures :courses, :handouts
   
   def test_should_create_handout
     assert_difference 'Handout.count' do

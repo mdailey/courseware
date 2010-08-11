@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class CourseTest < ActiveSupport::TestCase
-  fixtures :courses
 
   def test_should_create_course
     assert_difference 'Course.count' do

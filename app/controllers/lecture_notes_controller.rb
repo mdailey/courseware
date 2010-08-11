@@ -20,7 +20,7 @@ class LectureNotesController < ApplicationController
     @lecture_note = @course.lecture_notes.find(params[:id])
     file = @lecture_note.lecture_note_file
     if file
-      send_data decode64( file.file_data ), :filename => @lecture_note.file_name, :type => mimetype(@lecture_note.file_label)
+      send_data Base64.decode64( file.file_data ), :filename => @lecture_note.file_name, :type => mimetype(@lecture_note.file_label)
     else
       raise 'No file data for lecture notes'
     end

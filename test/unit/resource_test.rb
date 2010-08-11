@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ResourceTest < ActiveSupport::TestCase
-  fixtures :resource_groups, :resources
   
   def test_should_create_resource
     assert_difference 'Resource.count' do

@@ -1,10 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  # Be sure to include AuthenticatedTestHelper in test/test_helper.rb instead.
-  # Then, you can remove it from this and the functional test.
-  include AuthenticatedTestHelper
-  fixtures :users
 
   def test_should_create_user
     assert_difference 'User.count' do
@@ -24,7 +20,6 @@ class UserTest < ActiveSupport::TestCase
     user.reload
     assert user.pending?
   end
-
 
   def test_should_require_login
     assert_no_difference 'User.count' do

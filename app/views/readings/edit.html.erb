@@ -5,7 +5,7 @@
 
 <% readings = Reading.find(:all) %>
 
-<% form_for Reading, :url => course_readings_path(@course), :html => { :id => 'course_readings' } do |form| %>
+<% form_for @course, :url => course_readings_path(@course), :html => { :id => 'course_readings' } do |form| %>
   <% fields_for "course[readings_blurb]", @blurb do |blurb_form| %>
     <table>
       <tr>

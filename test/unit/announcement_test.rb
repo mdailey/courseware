@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class AnnouncementTest < ActiveSupport::TestCase
-  fixtures :courses, :announcements
   
   def test_should_create_announcement
     assert_difference 'Announcement.count' do

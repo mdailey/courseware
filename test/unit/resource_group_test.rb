@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ResourceGroupTest < ActiveSupport::TestCase
-  fixtures :resource_groups
 
   def test_should_create_resource_group
     assert_difference 'ResourceGroup.count' do

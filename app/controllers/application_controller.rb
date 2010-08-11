@@ -11,10 +11,10 @@ class ApplicationController < ActionController::Base
   include RoleRequirementSystem
 
   # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
+  filter_parameter_logging :password
   
   def access_denied
-    render :controller => :courses, :action => :denied, :status => 401
+    render :template => 'shared/denied', :status => 401
     return false
   end
 
