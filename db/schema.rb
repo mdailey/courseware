@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100802055954) do
+ActiveRecord::Schema.define(:version => 20100812075206) do
 
   create_table "announcements", :force => true do |t|
     t.integer  "course_id"
@@ -105,6 +105,13 @@ ActiveRecord::Schema.define(:version => 20100802055954) do
     t.string   "topic"
     t.string   "file_label"
     t.string   "file_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "lecture_dates", :force => true do |t|
+    t.integer  "lecture_id"
+    t.date     "date"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
