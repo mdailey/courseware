@@ -15,7 +15,7 @@
     <tr class="<%= cycle('odd', 'even') %>">
       <td class="lecturenumber"><%= h l.number %></td>
       <td class="lecturedate">
-        <%= h l.lecture_dates.sort {|d1,d2| d1.date <=> d2.date}.collect { |d| d.date.to_formatted_s(:rfc822) }.join('<br/>') %>
+        <%= h l.lecture_dates_string %>
       </td>
       <td class="lecturetopic"><%= sanitize l.topics %></td>
       <td class="lecturereading"><%= sanitize l.readings %></td>

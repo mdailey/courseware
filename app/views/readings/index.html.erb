@@ -17,7 +17,7 @@
           <% if r.reading.sales_info_url %>
             <a href="<%=h r.reading.sales_info_url %>">
           <% end %>
-          <img class="readingimg" src="<%=h BOOK_IMAGE_URL_PREFIX + '/' + r.reading.image_url %>"/>
+          <img class="readingimg" src="<%=h BOOK_IMAGE_URL_PREFIX + '/' + r.reading.image_url %>" alt="Book cover for <%= h r.reading.title %>"/>
           <% if r.reading.sales_info_url %>
             </a>
           <% end %>

@@ -336,3 +336,7 @@ th.assignmentfile, td.assignmentfile {
 div.instructors {
   background: #d0d0d0;
 }
+
+div.ui-jqgrid-titlebar {
+  height: 20px;
+}

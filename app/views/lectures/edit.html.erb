@@ -1,0 +1,17 @@
+
+<% @title = 'Edit lecture schedule' %>
+
+<h3>Edit lecture schedule</h3>
+
+<%= jqgrid("Lecture schedule", "lectures_grid", course_lectures_path(@course) + '/edit',
+  [
+    { :field => "id", :label => "ID", :sortable => false, :hidden => true },
+    { :field => "number", :label => "Lecture number", :sortable => false, :editable => true },
+    { :field => "lecture_dates_string", :label => "Dates", :sortable => false, :editable => true },
+    { :field => "topics", :label => "Topics", :width => 400, :sortable => false, :editable => true, :edittype => "textarea", :editoptions => { :rows => 3 } },
+    { :field => "readings", :label => "Readings", :width => 400, :sortable => false, :editable => true, :edittype => "textarea", :editoptions => { :rows => 3 } },
+  ],
+  { :autowidth => true, :height => "350", :rows_per_page => @course.lectures.size, :add => true, :edit => true, :inline_edit => true, :delete => true,
+    :edit_url => course_lectures_path(@course) + '/update' }
+) %>
+

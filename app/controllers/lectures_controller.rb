@@ -12,4 +12,50 @@ class LecturesController < ApplicationController
     end
   end
 
+  def edit
+    @course = Course.find(params[:course_id])
+    @blurb = @course.lectures_blurb
+    @use_jqgrid = true
+    
+    @course_lectures = @course.lectures.find(:all) do
+      if params[:_search] == "true"
+        topics    =~ "%#{params[:topics]}%" if params[:topics].present?
+        readings  =~ "%#{params[:readings]}%" if params[:readings].present?
+      end
+      paginate :page => params[:page], :per_page => params[:rows]      
+      order_by "number asc"
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => @course_lectures.to_jqgrid_json([:id,:number,:lecture_dates_string,:topics,:readings], 
+                                                         params[:page], params[:rows], @course_lectures.total_entries) }
+    end
+  end
+
+  def update
+    if params[:oper] == "del"
+      Lecture.find(params[:id]).destroy
+    else
+      lecture_params = { :number => params[:number], :lecture_dates_string => params[:lecture_dates_string], :topics => params[:topics], :readings => params[:readings] }
+      if params[:id] == "_empty"
+        logger.debug lecture_params.inspect
+        lecture = Lecture.create(lecture_params)
+      else
+        lecture = Lecture.find(params[:id])
+        lecture.update_attributes(lecture_params)
+      end
+    end
+
+    # If you need to display error messages
+    err = ""
+    if lecture
+      lecture.errors.entries.each do |error|
+        err << "<strong>#{error[0]}</strong> : #{error[1]}<br/>"
+      end
+    end
+
+    render :text => "#{err}"
+  end
+
 end
