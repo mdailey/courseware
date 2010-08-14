@@ -16,17 +16,31 @@ class LecturesController < ApplicationController
     @course = Course.find(params[:course_id])
     @blurb = @course.lectures_blurb
     @use_jqgrid = true
-    page = params[:page]
-    rows = params[:rows]
-    rows = 10.to_s if !rows or rows.to_i < 10
     
+    page = params[:page]
+
+    rows = params[:rows]
+    if !rows || rows.length == 0 || rows.to_i <= 0
+      rows = @course.lectures.count
+    end
+
+    sidx = params[:sidx]
+    if !sidx or sidx.length == 0
+      sidx = "number"
+    end
+
+    sord = params[:sord]
+    if !sord or sord.length == 0
+      sord = "asc"
+    end
+ 
     @course_lectures = @course.lectures.find(:all) do
       if params[:_search] == "true"
         topics    =~ "%#{params[:topics]}%" if params[:topics].present?
         readings  =~ "%#{params[:readings]}%" if params[:readings].present?
       end
       paginate :page => page, :rows => rows
-      order_by "#{params[:sidx]} #{params[:sord]}"
+      order_by "#{sidx} #{sord}"
     end
 
     respond_to do |format|
