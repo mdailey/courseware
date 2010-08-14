@@ -34,6 +34,7 @@ module Jqgrid
           :inline_edit_handler => 'null',
           :add                 => 'false',
           :delete              => 'false',
+          :pager               => 'true',
           :search              => 'true',
           :edit                => 'false',          
           :inline_edit         => 'false',
@@ -53,6 +54,24 @@ module Jqgrid
 
       # Generate columns data
       col_names, col_model = gen_columns(columns)
+
+      # Enable pager
+      pager_options = ""
+      if options[:pager] == 'true'
+        pager_options = %Q/
+              pager:'##{id}_pager',
+              rowNum:#{options[:rows_per_page]},
+              rowList:[10,25,50,100],
+              viewrecords: true,/
+      else
+        pager_options = %Q/
+              pager:'##{id}_pager',
+              pgbuttons:'false',
+              viewrecords:'false',
+              rowNum:-1,
+              rowList:[],
+              pginput:'false',/
+      end
 
       # Enable filtering (by default)
       search = ""
@@ -254,18 +273,15 @@ module Jqgrid
               datatype: "json",
               colNames:#{col_names},
               colModel:#{col_model},
-              pager: '##{id}_pager',
-              rowNum:#{options[:rows_per_page]},
-              rowList:[10,25,50,100],
+              #{pager_options}
+              rownumbers: #{options[:rownumbers]},
               imgpath: '/images/jqgrid',
               sortname: '#{options[:sort_column]}',
-              viewrecords: true,
               height: #{options[:height]},
               sortorder: '#{options[:sort_order]}',
               gridview: #{options[:gridview]},
               scrollrows: true,
               autowidth: #{options[:autowidth]},
-              rownumbers: #{options[:rownumbers]},
               #{multiselect}
               #{masterdetails}
               #{grid_loaded}

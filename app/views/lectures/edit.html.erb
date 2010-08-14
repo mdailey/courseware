@@ -24,7 +24,7 @@
       :edittype => "textarea", :editoptions => { :rows => 5, :cols => 50 } },
   ],
   { :autowidth => true, :height => "350", :rows_per_page => @course.lectures.size, :add => true,
-    :edit => true, :inline_edit => false, :delete => true,
+    :edit => true, :inline_edit => false, :delete => true, :pager => false,
     :edit_url => update_course_lectures_path(@course), :edit_dialog_width => 500 }
 ) %>
 
