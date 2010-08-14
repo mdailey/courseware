@@ -16,10 +16,10 @@ class LectureTest < ActiveSupport::TestCase
     end
   end
   
-  def test_should_require_unique
-    assert_no_difference 'MenuAction.count' do
+  def test_should_allow_nonunique
+    assert_difference 'Lecture.count' do
       a = create_record(:course_id => 1, :number => 1)
-      assert a.errors.on(:number)
+      assert !a.new_record?, "#{a.errors.full_messages.to_sentence}"
     end
   end
   

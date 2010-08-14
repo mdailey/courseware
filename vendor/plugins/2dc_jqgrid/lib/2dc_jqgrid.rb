@@ -38,7 +38,8 @@ module Jqgrid
           :edit                => 'false',          
           :inline_edit         => 'false',
           :autowidth           => 'false',
-          :rownumbers          => 'false'                    
+          :rownumbers          => 'false',
+          :edit_dialog_width   => '300',
         }.merge(options)
       
       # Stringify options values
@@ -246,6 +247,7 @@ module Jqgrid
         <script type="text/javascript">
           var lastsel;
           #{'jQuery(document).ready(function(){' unless options[:omit_ready]=='true'}
+          jQuery.jgrid.edit.width = #{options[:edit_dialog_width]};
           var mygrid = jQuery("##{id}").jqGrid({
               url:'#{action}?q=1',
               editurl:'#{options[:edit_url]}',
@@ -344,6 +346,8 @@ module Jqgrid
             options << "%s:%s;" % [obj.send(couple[1].second), obj.send(couple[1].third)]
           end
           options.chop! << %Q/",/
+        elsif couple[1] =~ /^js:/
+          options << %Q/#{couple[0]}:#{couple[1].gsub(/^js:/,'')},/
         else # :size => 30, :rows => 5, :maxlength => 20, ...
           if couple[1].instance_of?(Fixnum) || couple[1] == 'true' || couple[1] == 'false' || couple[1] == true || couple[1] == false
             options << %Q/#{couple[0]}:#{couple[1]},/

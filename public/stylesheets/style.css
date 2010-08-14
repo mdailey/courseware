@@ -340,3 +340,8 @@ div.instructors {
 div.ui-jqgrid-titlebar {
   height: 20px;
 }
+
+div.ui-datepicker {
+  z-index: 1000;
+}
+
