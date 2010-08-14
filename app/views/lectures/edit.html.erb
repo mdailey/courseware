@@ -15,7 +15,7 @@
 <%= jqgrid("Lecture schedule", "lectures_grid", edit_course_lectures_path(@course),
   [
     { :field => "id", :label => "ID", :sortable => false, :hidden => true },
-    { :field => "number", :label => "Lecture number", :sortable => false, :editable => true },
+    { :field => "number", :label => "Lecture number", :sortable => true, :editable => true },
     { :field => "lecture_dates_string", :label => "Dates", :sortable => false, :editable => true,
       :editoptions => { :dataInit => "js:pickDatesForm" } },
     { :field => "topics", :label => "Topics", :width => 400, :sortable => false, :editable => true,

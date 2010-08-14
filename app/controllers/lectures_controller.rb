@@ -26,7 +26,7 @@ class LecturesController < ApplicationController
         readings  =~ "%#{params[:readings]}%" if params[:readings].present?
       end
       paginate :page => page, :rows => rows
-      order_by "number asc"
+      order_by "#{params[:sidx]} #{params[:sord]}"
     end
 
     respond_to do |format|
