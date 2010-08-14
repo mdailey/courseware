@@ -8,7 +8,8 @@ class Lecture < ActiveRecord::Base
   end
   
   def lecture_dates_string=(dates)
-    logger.debug "Lecture: #{dates.inspect}"
+    logger.debug "Lecture dates= #{dates.inspect}"
+    lecture_dates.delete_all
     if dates.is_a? Array
       dates.each do |date|
         lecture_dates.build({:date => date})
