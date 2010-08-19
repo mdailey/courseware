@@ -35,12 +35,16 @@ ADMIN_EMAIL = 'mdailey@ait.ac.th'
 
 # Javascript to tag on to the end of the page
 
-LAYOUT_JAVASCRIPT = '<script type="text/javascript">
+if ENV['RAILS_ENV'] == 'production'
+  LAYOUT_JAVASCRIPT = %Q(<script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 <script type="text/javascript">
 var pageTracker = _gat._getTracker("UA-5968281-1");
 pageTracker._trackPageview();
-</script>'
+</script>)
+else
+  LAYOUT_JAVASCRIPT = ''
+end
 
