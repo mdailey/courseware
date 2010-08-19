@@ -1,0 +1,21 @@
+
+<% new_or_existing = handout.new_record? ? 'new' : 'existing' %>
+<% prefix = "course[#{new_or_existing}_handout_attributes][]" %>
+
+<% fields_for prefix, handout do |handout_form| %>
+  <% if handout.new_record? %>
+    <tr><th colspan="2" align="left">New handout:</th></tr>
+  <% end %>
+  <tr id="handout_<%= handout.id %>">
+    <td><%= handout_form.text_field :number, :size => 1 %></td>
+    <td><%= handout_form.text_field :topic, :size => 26 %></td>
+    <td><%= handout_form.text_field :file_label, :size => 2 %></td>
+    <td><%= handout_form.text_field :file_name, :size => 9 %></td>
+    <td><%= handout_form.file_field :handout_file, :size => 9 %></td>
+    <td>
+      <% if !handout.new_record? %>
+        <%= link_to_function "remove", "remove('handout_#{handout.id}')" %>
+      <% end %>        
+    </td>
+  </tr>
+<% end %>

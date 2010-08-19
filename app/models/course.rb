@@ -1,18 +1,18 @@
 class Course < ActiveRecord::Base
-  has_many :menu_actions
-  has_many :lectures
-  has_many :announcements
-  has_many :blurbs
-  has_many :course_instructors, :autosave => true
+  has_many :menu_actions, :dependent => :destroy
+  has_many :lectures, :dependent => :destroy
+  has_many :announcements, :dependent => :destroy
+  has_many :blurbs, :dependent => :destroy
+  has_many :course_instructors, :autosave => true, :dependent => :destroy
   has_many :instructors, :through => :course_instructors, :source => :person
-  has_many :lecture_notes
-  has_many :handouts
-  has_many :course_readings
+  has_many :lecture_notes, :dependent => :destroy
+  has_many :handouts, :autosave => true, :dependent => :destroy
+  has_many :course_readings, :dependent => :destroy
   has_many :readings, :through => :course_readings
-  has_many :course_resources
+  has_many :course_resources, :dependent => :destroy
   has_many :resource_groups, :through => :course_resources
-  has_many :exams
-  has_many :assignments
+  has_many :exams, :dependent => :destroy
+  has_many :assignments, :dependent => :destroy
   
   validates_presence_of :year
   validates_presence_of :semester
@@ -61,10 +61,8 @@ class Course < ActiveRecord::Base
   end
 
   def existing_course_reading_attributes=(course_reading_attributes)
-    logger.debug "Course reading attributes: #{course_reading_attributes}"
     course_readings.reject(&:new_record?).each do |course_reading|
       attributes = course_reading_attributes[course_reading.id.to_s]
-      logger.debug "  attributes: #{attributes}"
       if attributes
         course_reading.attributes = attributes
       else
@@ -84,9 +82,55 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def new_handout_attributes=(handout_attributes)
+    handout_attributes.each do |attributes|
+      handout_file = nil
+      if attributes[:handout_file]
+        attributes[:file_name] = attributes[:handout_file].original_filename
+        file_data = attributes[:handout_file].read
+        attributes[:handout_file].delete
+        attributes.delete(:handout_file)
+        handout_file = HandoutFile.new
+        handout_file.file_data = Base64.encode64 file_data
+      end
+      if (attributes[:number] and attributes[:number].length) > 0 or
+         (attributes[:topic] and attributes[:topic].length > 0)
+        handouts.build(attributes)
+        if handout_file
+          handout = handouts.select {|h| h.new_record?}.first
+          handout.handout_file = handout_file
+          handout.handout_file.handout = handout
+        end
+      end
+    end
+  end
+   
+  def existing_handout_attributes=(handout_attributes)
+    handouts.reject(&:new_record?).each do |handout|
+      attributes = handout_attributes[handout.id.to_s]
+      if attributes
+        file_data = nil
+        if attributes[:handout_file]
+          attributes[:file_name] = attributes[:handout_file].original_filename
+          file_data = attributes[:handout_file].read
+          attributes[:handout_file].delete
+          attributes.delete(:handout_file)
+        end
+        handout.attributes = attributes
+        if file_data
+          if !handout.handout_file
+            handout.handout_file = HandoutFile.new
+            handout.handout_file.handout = handout
+          end
+          handout.handout_file.file_data = Base64.encode64 file_data
+        end  
+      else
+        handouts.delete(handout)
+      end
+    end
+  end
+  
   def save_course_instructors
-    logger.debug "Saving"
-    logger.debug course_instructors.inspect
     course_instructors.each do |course_instructor|
       course_instructor.save(false)
     end
@@ -139,6 +183,10 @@ class Course < ActiveRecord::Base
   
   def readings_blurb=(attributes)
     update_blurb('readings',attributes)
+  end
+  
+  def handouts_blurb=(attributes)
+    update_blurb('handouts',attributes)
   end
   
   def resources_blurb

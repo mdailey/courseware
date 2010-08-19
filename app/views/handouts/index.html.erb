@@ -1,4 +1,6 @@
 
+<% @title = 'Course handouts' %>
+
 <h3>Handouts</h3>
 
 <%= render_blurb(@blurb) %>
@@ -10,7 +12,7 @@
     <th class="handoutfile">file</th>
   </tr>
 
-  <% for h in @handouts.sort { |h1,h2| h1.number <=> h2.number } %>
+  <% for h in @handouts %>
     <tr class="<%= cycle('odd', 'even') %>">
       <td class="handoutnumber"><%=h h.number %></td>
       <td class="handouttopic"><%=h h.topic %></td>

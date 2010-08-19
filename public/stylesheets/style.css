@@ -11,7 +11,7 @@ body {
   margin: 0 auto;
 }
 
-body, p, ol, ul, td {
+body, p, ol, ul, td, input, select, textarea {
   font-family: arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
@@ -272,6 +272,13 @@ th.lecturenotefile, td.lecturenotefile, th.handoutfile, td.handoutfile {
   text-align: center;
 }
 
+table.handoutform {
+  padding: 0;
+}
+table.handoutform td {
+  padding: 0;
+}
+
 th.readingcover, td.readingcover {
   width: 140px;
 }
@@ -344,4 +351,5 @@ div.ui-jqgrid-titlebar {
 div.ui-datepicker {
   z-index: 1000;
 }
+
 

@@ -6,14 +6,7 @@
 <% readings = Reading.find(:all) %>
 
 <% form_for @course, :url => course_readings_path(@course), :html => { :id => 'course_readings' } do |form| %>
-  <% fields_for "course[readings_blurb]", @blurb do |blurb_form| %>
-    <table>
-      <tr>
-        <td><%= blurb_form.label :contents, 'Blurb' %></td>
-        <td><%= blurb_form.text_area :contents, :size => "40x3"%></td>
-      </tr>
-    </table>
-  <% end %>
+  <%= render_blurb_edit_form 'readings', @blurb %>
   <br/>
   <br/>
   Current readings:<br/><br/>

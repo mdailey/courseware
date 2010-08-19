@@ -2,9 +2,7 @@ class HandoutsController < ApplicationController
   require_role 'admin', :for_all_except => [:index, :show]
 
   def index
-    @course = Course.find(params[:course_id])
-    @handouts = @course.handouts
-    @blurb = @course.handouts_blurb
+    setup
 
     respond_to do |format|
       format.html # index.html.erb
@@ -23,4 +21,45 @@ class HandoutsController < ApplicationController
     end
   end
   
+  def edit
+    setup
+    @handouts.build
+  end
+  
+  def update
+    @course = Course.find(params[:course_id])
+    fix_handouts_attributes(params)
+
+    respond_to do |format|
+      if @course.update_attributes(params[:course])
+        format.html { redirect_to(edit_handouts_path(@course), :notice => 'Handouts successfully updated.') }
+        format.xml  { head :ok }
+      else
+        format.html do
+          @handouts = @course.handouts
+          if @handouts.select { |h| h.new_record? }.size == 0
+            @handouts.build
+          end
+          render :action => "edit"
+        end
+        format.xml  { render :xml => @course.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+  private
+  
+  def setup
+    @course = Course.find(params[:course_id])
+    #@handouts = @course.handouts.sort { |h1,h2| h1.number <=> h2.number }
+    @handouts = @course.handouts
+    @blurb = @course.handouts_blurb
+  end
+
+  def fix_handouts_attributes(params)
+    if params[:course] and !params[:course][:existing_handout_attributes]
+      params[:course][:existing_handout_attributes] = {}
+    end
+  end
+
 end

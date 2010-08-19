@@ -3,6 +3,9 @@ ActionController::Routing::Routes.draw do |map|
   map.edit_course_lectures 'courses/:course_id/lectures/edit', :controller => 'lectures', :action => 'edit', :conditions => { :method => :get }
   map.update_course_lectures 'courses/:course_id/lectures/update', :controller => 'lectures', :action => 'update', :conditions => { :method => :post }
   
+  map.edit_handouts 'courses/:course_id/handouts/edit', :controller => 'handouts', :action => 'edit', :conditions => { :method => :get }
+  map.connect 'courses/:course_id/handouts', :controller => 'handouts', :action => 'update', :conditions => { :method => :put }
+
   map.edit_course_readings 'courses/:course_id/readings/edit', :controller => 'readings', :action => 'edit', :conditions => { :method => :get }
   map.connect 'courses/:course_id/readings', :controller => 'readings', :action => 'update', :conditions => { :method => :put }
   

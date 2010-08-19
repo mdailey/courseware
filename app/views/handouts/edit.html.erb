@@ -1,0 +1,29 @@
+
+<% @title = 'Edit handouts' %>
+
+<h3>Edit handouts</h3>
+
+<% form_for @course, :handouts, :url => course_handouts_path(@course),
+            :html => { :id => 'course_handouts', :multipart => true } do |form| %>
+  <%= form.error_messages %>
+  <%= render_blurb_edit_form 'handouts', @blurb %>
+  <table class="handoutform">
+    <thead>
+      <tr><th>#</th><th>Topic</th><th>Label</th><th>Filename</th><th>File upload</th></tr>
+    </thead>
+    <tbody id="handouts_table">
+      <%= render :partial => "handout", :collection => @handouts %>
+    </tbody>
+  </table>
+  <%= form.submit "Update handouts" %>
+<% end %>
+
+<script>
+  function remove(id)
+  {
+    var formDiv = document.getElementById('handouts_table');
+    var child = document.getElementById(id);
+    if (formDiv && child) formDiv.removeChild(child);
+  } 
+</script>
+

@@ -26,7 +26,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     get :show, :id => 1, :course_id => 1
     assert_response :success
   end
-
+  
   test "should obey role access" do
     assert_users_access( { :admin => true, :quentin => true  }, "index" )
     assert_users_access( { :admin => true, :quentin => true  }, "show" )
