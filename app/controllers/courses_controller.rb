@@ -1,7 +1,9 @@
 class CoursesController < ApplicationController
   require_role 'admin', :for_all_except => [:index, :show, :static]
   before_filter :store_location
-  
+  before_filter :find_course, :except => [:index,:new,:create]
+
+  # GET /courses
   def index
     @courses = Course.all
 
@@ -10,11 +12,10 @@ class CoursesController < ApplicationController
       format.xml  { render :xml => @courses }
     end
   end
-
+  
   # GET /courses/1
   # GET /courses/1.xml
   def show
-    @course = Course.find(params[:id])
     @title = 'Courses: ' + action_name
     @instructors = @course.main_instructors
     @tas = @course.tas
@@ -70,7 +71,6 @@ class CoursesController < ApplicationController
   # PUT /courses/1
   # PUT /courses/1.xml
   def update
-    @course = Course.find(params[:id])
     fix_instructors(params)
 
     respond_to do |format|
@@ -93,7 +93,6 @@ class CoursesController < ApplicationController
   # DELETE /courses/1
   # DELETE /courses/1.xml
   def destroy
-    @course = Course.find(params[:id])
     @course.destroy
 
     respond_to do |format|
@@ -104,7 +103,6 @@ class CoursesController < ApplicationController
   
   # GET /courses/1/paper_list
   def static
-    @course = Course.find(params[:id])
     static_action = params[:static_action]
     menu_action = @course.menu_actions.select { |mi| mi.action == static_action }.first
     if menu_action
@@ -123,7 +121,7 @@ class CoursesController < ApplicationController
     end
   end
   
-  private
+  protected
   
   def strip_headers( s )
     s.gsub /^<![^>]*>/, ''
@@ -136,7 +134,6 @@ class CoursesController < ApplicationController
   end
   
   def setup_for_edit
-    @course = Course.find(params[:id])
     @course.course_instructors.build :role => 'main'
     @course.course_instructors.build :role => 'ta'
     @title = 'Courses: ' + action_name
@@ -145,6 +142,10 @@ class CoursesController < ApplicationController
   def setup_for_new
     @course.course_instructors.build :role => 'main'
     @course.course_instructors.build :role => 'ta'
+  end
+
+  def find_course
+    @course = Course.find(params[:id])
   end
 
 end

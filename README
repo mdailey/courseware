@@ -1,8 +1,8 @@
 
-Courseware README
+Courseware application
 
 This is a simple Rails application for teachers who want to manage a set
-of standard Web pages for courses they are teaching.
+of standard Web pages for the courses they are teaching.
 
 After installing the application, there are a few things to do:
  - Edit config/initializers/courseware-config.rb
@@ -11,4 +11,5 @@ After installing the application, there are a few things to do:
  - rake db:create, rake db:migrate, rake gems:install
  - Change icons in public/images
  - Edit style.css to suit you
+
 

@@ -7,12 +7,12 @@
             :html => { :id => 'course_handouts', :multipart => true } do |form| %>
   <%= form.error_messages %>
   <%= render_blurb_edit_form 'handouts', @blurb %>
-  <table class="handoutform">
+  <table class="fileform">
     <thead>
       <tr><th>#</th><th>Topic</th><th>Label</th><th>Filename</th><th>File upload</th></tr>
     </thead>
     <tbody id="handouts_table">
-      <%= render :partial => "handout", :collection => @handouts %>
+      <%= render :partial => "handout", :collection => @file_list %>
     </tbody>
   </table>
   <%= form.submit "Update handouts" %>

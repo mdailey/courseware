@@ -26,13 +26,13 @@ class CourseInstructorTest < ActiveSupport::TestCase
   end
   
   def test_should_find_instructors
-    assert Course.find(1).instructors.size == 4
+    assert_equal 4, Course.find(1).instructors.count
   end
 
   private
   
   def create_record(options = {})
-    record = CourseInstructor.new({ :course_id => 2, :person_id => 1,
+    record = CourseInstructor.new({ :course_id => 2, :person_id => people(:janedoe).id,
                                     :role => 'main' }.merge(options))
     record.save
     record

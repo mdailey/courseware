@@ -272,10 +272,10 @@ th.lecturenotefile, td.lecturenotefile, th.handoutfile, td.handoutfile {
   text-align: center;
 }
 
-table.handoutform {
+table.fileform {
   padding: 0;
 }
-table.handoutform td {
+table.fileform td {
   padding: 0;
 }
 

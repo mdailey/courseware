@@ -5,15 +5,15 @@ class HandoutsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index, :course_id => 1
     assert_response :success
-    assert_not_nil assigns(:handouts)
+    assert_not_nil assigns(:file_list)
     login_as(:quentin)
     get :index, :course_id => 1
     assert_response :success
-    assert_not_nil assigns(:handouts)
+    assert_not_nil assigns(:file_list)
     login_as(:admin)
     get :index, :course_id => 1
     assert_response :success
-    assert_not_nil assigns(:handouts)
+    assert_not_nil assigns(:file_list)
   end
 
   test "should show handout" do
@@ -42,13 +42,13 @@ class HandoutsControllerTest < ActionController::TestCase
   end
 
   test "should obey role access" do
-    assert_users_access( { :admin => true, :quentin => true  }, "index" )
-    assert_users_access( { :admin => true, :quentin => true  }, "show" )
-    assert_users_access( { :admin => true, :quentin => false }, "edit" )
-    assert_users_access( { :admin => true, :quentin => false }, "update" )
+    assert_users_access( { :admin => true, :quentin => true  }, "index", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => true  }, "show", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => false }, "edit", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => false }, "update", :course_id => 1 )
   end
   
-  test "should add lecture" do
+  test "should add handout" do
     login_as(:admin)
     assert_difference('Handout.count') do
       put_record( {}, true )
@@ -56,7 +56,7 @@ class HandoutsControllerTest < ActionController::TestCase
     assert_redirected_to edit_handouts_path({:course_id => 1})
   end
 
-  test "should update lectures" do
+  test "should update handouts" do
     login_as(:admin)
     assert_difference('Handout.count',0) do
       put_record( {}, false )
@@ -64,7 +64,7 @@ class HandoutsControllerTest < ActionController::TestCase
     assert_redirected_to edit_handouts_path({:course_id => 1})
   end
   
-  test "should delete lecture" do
+  test "should delete handout" do
     login_as(:admin)
     assert_difference('Handout.count',-1) do
       put_record( {}, false, false )
@@ -72,7 +72,7 @@ class HandoutsControllerTest < ActionController::TestCase
     assert_redirected_to edit_handouts_path({:course_id => 1})
   end
   
-  test "should fail to update lecture" do
+  test "should fail to update handout" do
     put_record
     assert_response :unauthorized
   end

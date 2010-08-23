@@ -92,12 +92,12 @@ class CoursesControllerTest < ActionController::TestCase
   
   test "should obey role access" do
     assert_users_access( { :admin => true, :quentin => true  }, "index" )
-    assert_users_access( { :admin => true, :quentin => true  }, "show" )
-    assert_users_access( { :admin => true, :quentin => true  }, "static" )
-    assert_users_access( { :admin => true, :quentin => false }, "destroy" )
+    assert_users_access( { :admin => true, :quentin => true  }, "show", :id => 1 )
+    assert_users_access( { :admin => true, :quentin => true  }, "static", :id => 1 )
+    assert_users_access( { :admin => true, :quentin => false }, "destroy", :id => 1 )
     assert_users_access( { :admin => true, :quentin => false }, "new" )
-    assert_users_access( { :admin => true, :quentin => false }, "update" )
-    assert_users_access( { :admin => true, :quentin => false }, "edit" )
+    assert_users_access( { :admin => true, :quentin => false }, "update", :id => 1 )
+    assert_users_access( { :admin => true, :quentin => false }, "edit", :id => 1 )
     assert_users_access( { :admin => true, :quentin => false }, "create" )
   end
 

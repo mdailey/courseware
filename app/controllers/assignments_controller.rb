@@ -1,8 +1,10 @@
 class AssignmentsController < ApplicationController
+  
   require_role 'admin', :for_all_except => [:index, :show]
 
+  before_filter :find_course
+  
   def index
-    @course = Course.find(params[:course_id])
     @assignments = @course.assignments
     @blurb = @course.assignments_blurb
 
@@ -13,7 +15,6 @@ class AssignmentsController < ApplicationController
   end
   
   def show
-    @course = Course.find(params[:course_id])
     @assignment = @course.assignments.find(params[:id])
     file = @assignment.assignment_file
     if file
@@ -23,4 +24,10 @@ class AssignmentsController < ApplicationController
     end
   end
 
+  protected
+  
+  def find_course
+    @course = Course.find(params[:course_id])
+  end
+  
 end

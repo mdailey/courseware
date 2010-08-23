@@ -20,7 +20,7 @@ class PersonTest < ActiveSupport::TestCase
   
   def test_should_require_unique_names
     assert_no_difference 'Person.count' do
-      a = create_person(:lastname => people(:one).lastname, :firstname => people(:one).firstname)
+      a = create_person(:lastname => people(:janedoe).lastname, :firstname => people(:janedoe).firstname)
       assert a.errors.on(:firstname)
     end
   end

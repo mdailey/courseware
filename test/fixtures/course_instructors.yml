@@ -2,20 +2,20 @@
 
 one:
   course_id: 1
-  person_id: 1
+  person: janedoe
   role: main
 
 two:
   course_id: 1
-  person_id: 2
+  person: johndoe
   role: main
 
 three:
   course_id: 1
-  person_id: 3
+  person: janesmith
   role: ta
 
 four:
   course_id: 1
-  person_id: 4
+  person: bobsmith
   role: ta

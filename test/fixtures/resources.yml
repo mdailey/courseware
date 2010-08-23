@@ -1,17 +1,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  resource_group_id: 1
+  resource_group: one
   link: MyText1
 
 two:
-  resource_group_id: 1
+  resource_group: one
   link: MyText2
 
 three:
-  resource_group_id: 2
+  resource_group: two
   link: MyText3
 
 four:
-  resource_group_id: 2
+  resource_group: two
   link: MyText4

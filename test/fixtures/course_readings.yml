@@ -2,10 +2,10 @@
 
 one:
   course_id: 1
-  reading_id: 1
+  reading: one
   required: false
 
 two:
   course_id: 1
-  reading_id: 2
+  reading: two
   required: false

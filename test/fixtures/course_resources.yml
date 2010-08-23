@@ -2,10 +2,10 @@
 
 one:
   course_id: 1
-  resource_group_id: 1
+  resource_group: one
   order: 1
 
 two:
   course_id: 1
-  resource_group_id: 2
+  resource_group: two
   order: 2

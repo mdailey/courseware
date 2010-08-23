@@ -1,7 +1,13 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < ActiveSupport::TestCase
-
+  def test_counts
+    assert_equal 4, User.count
+    assert_equal 2, Role.count
+    assert_equal 1, users(:quentin).roles.count
+    assert_equal 1, users(:admin).roles.count
+  end
+  
   def test_should_create_user
     assert_difference 'User.count' do
       user = create_user

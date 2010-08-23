@@ -1,29 +1,32 @@
-require 'base64'
+class LectureNotesController < FileListController
 
-class LectureNotesController < ApplicationController
-  require_role 'admin', :for_all_except => [:index, :show]
-
-  def index
-    @course = Course.find(params[:course_id])
-    @lecture_notes = @course.lecture_notes
+  protected
+  
+  def set_file_list
+    @file_list = @course.lecture_notes
+  end
+  
+  def set_blurb
     @blurb = @course.lecture_notes_blurb
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @lecture_notes }
-    end
-
   end
   
-  def show
-    @course = Course.find(params[:course_id])
-    @lecture_note = @course.lecture_notes.find(params[:id])
-    file = @lecture_note.lecture_note_file
-    if file
-      send_data Base64.decode64( file.file_data ), :filename => @lecture_note.file_name, :type => mimetype(@lecture_note.file_label)
-    else
-      raise 'No file data for lecture notes'
+  def set_file
+    lecture_note = @course.lecture_notes.find(params[:id])
+    if lecture_note and lecture_note.lecture_note_file
+      @file_data = lecture_note.lecture_note_file.file_data
+      @file_name = lecture_note.file_name
+      @file_label = lecture_note.file_label
     end
   end
   
+  def edit_path(course)
+    edit_lecture_notes_path(course)
+  end
+
+  def fix_attributes
+    if params[:course] and !params[:course][:existing_lecture_note_attributes]
+      params[:course][:existing_lecture_note_attributes] = {}
+    end
+  end
+ 
 end

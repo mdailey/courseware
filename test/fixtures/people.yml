@@ -1,21 +1,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  id: 1
+johndoe:
   firstname: John
   lastname: Doe
 
-two:
-  id: 2
+janesmith:
   firstname: Jane
   lastname: Smith
 
-three:
-  id: 3
+bobsmith:
   firstname: Bob
   lastname: Smith
 
-four:
-  id: 4
+janedoe:
   firstname: Jane
   lastname: Doe

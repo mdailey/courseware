@@ -25,7 +25,7 @@ class CourseReadingTest < ActiveSupport::TestCase
   private
   
   def create_record(options = {})
-    record = CourseReading.new({ :course_id => 2, :reading_id => 1,
+    record = CourseReading.new({ :course_id => 2, :reading_id => readings(:one).id,
                                  :required => false }.merge(options))
     record.save
     record

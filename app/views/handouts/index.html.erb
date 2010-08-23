@@ -12,7 +12,7 @@
     <th class="handoutfile">file</th>
   </tr>
 
-  <% for h in @handouts %>
+  <% for h in @file_list.sort { |h1,h2| h1.number <=> h2.number } %>
     <tr class="<%= cycle('odd', 'even') %>">
       <td class="handoutnumber"><%=h h.number %></td>
       <td class="handouttopic"><%=h h.topic %></td>

@@ -17,13 +17,13 @@ class ResourceTest < ActiveSupport::TestCase
   end
   
   def test_should_find_resources
-    assert ResourceGroup.find(1).resources.size == 2
+    assert ResourceGroup.find(resource_groups(:one).id).resources.size == 2
   end
 
   private
   
   def create_record(options = {})
-    record = Resource.new({ :resource_group_id => 2, :link => 'XXX' }.merge(options))
+    record = Resource.new({ :resource_group_id => resource_groups(:two).id, :link => 'XXX' }.merge(options))
     record.save
     record
   end

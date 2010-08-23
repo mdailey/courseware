@@ -25,7 +25,7 @@ class CourseResourceTest < ActiveSupport::TestCase
   private
   
   def create_record(options = {})
-    record = CourseResource.new({ :course_id => 2, :resource_group_id => 1 }.merge(options))
+    record = CourseResource.new({ :course_id => 2, :resource_group_id => resource_groups(:one).id }.merge(options))
     record.save
     record
   end

@@ -1,0 +1,21 @@
+
+<% new_or_existing = file.new_record? ? 'new' : 'existing' %>
+<% prefix = "course[#{new_or_existing}_lecture_note_attributes][]" %>
+
+<% fields_for prefix, file do |file_form| %>
+  <% if file.new_record? %>
+    <tr><th colspan="2" align="left">New lecture note:</th></tr>
+  <% end %>
+  <tr id="lecture_note_<%= file.id %>">
+    <td><%= file_form.text_field :number, :size => 1 %></td>
+    <td><%= file_form.text_field :topic, :size => 26 %></td>
+    <td><%= file_form.text_field :file_label, :size => 2 %></td>
+    <td><%= file_form.text_field :file_name, :size => 9 %></td>
+    <td><%= file_form.file_field :lecture_note_file, :size => 7 %></td>
+    <td>
+      <% if !file.new_record? %>
+        <%= link_to_function "remove", "remove('lecture_note_#{file.id}')" %>
+      <% end %>        
+    </td>
+  </tr>
+<% end %>
