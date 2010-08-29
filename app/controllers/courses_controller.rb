@@ -1,7 +1,9 @@
 class CoursesController < ApplicationController
   require_role 'admin', :for_all_except => [:index, :show, :static]
   before_filter :store_location
-  before_filter :find_course, :except => [:index,:new,:create]
+  before_filter :find_course, :except => [:index, :new, :create]
+  before_filter :find_people, :only => [:edit, :new]
+  before_filter :build_course_instructors, :only => [:edit, :new]
 
   # GET /courses
   def index
@@ -29,9 +31,6 @@ class CoursesController < ApplicationController
   # GET /courses/new
   # GET /courses/new.xml
   def new
-    @course = Course.new
-    setup_for_new
-
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @course }
@@ -61,7 +60,7 @@ class CoursesController < ApplicationController
           end }
         format.xml  { render :xml => @course, :status => :created, :location => @course }
       else
-        setup_for_new
+        build_new_roles
         format.html { render :action => "new" }
         format.xml  { render :xml => @course.errors, :status => :unprocessable_entity }
       end
@@ -75,12 +74,13 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.update_attributes(params[:course])
-        format.html {
+        format.html do
           if params[:commit] != 'Update'
             redirect_to(edit_course_path(@course), :notice => 'Course was successfully updated.')
           else
             redirect_to(@course, :notice => 'Course was successfully updated.')
-          end }
+          end
+        end
         format.xml  { head :ok }
       else
         setup_for_edit
@@ -133,19 +133,28 @@ class CoursesController < ApplicationController
     end
   end
   
-  def setup_for_edit
-    @course.course_instructors.build :role => 'main'
-    @course.course_instructors.build :role => 'ta'
-    @title = 'Courses: ' + action_name
+  def build_course_instructors
+    if !@course
+      @course = Course.new
+    end
+    if @course.course_instructors.select { |cr| cr.new_record? and cr.role == 'main' }.size == 0
+      @course.course_instructors.build :role => 'main'
+    end
+    if @course.course_instructors.select { |cr| cr.new_record? and cr.role == 'ta' }.size == 0
+      @course.course_instructors.build :role => 'ta'
+    end
   end
 
-  def setup_for_new
-    @course.course_instructors.build :role => 'main'
-    @course.course_instructors.build :role => 'ta'
+  def setup_for_edit
+    @title = 'Courses: ' + action_name
   end
 
   def find_course
     @course = Course.find(params[:id])
+  end
+
+  def find_people
+    @people = Person.find(:all)
   end
 
 end

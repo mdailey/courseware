@@ -2,11 +2,11 @@ class LectureNotesController < FileListController
 
   protected
   
-  def set_file_list
+  def find_file_list
     @file_list = @course.lecture_notes
   end
   
-  def set_blurb
+  def find_blurb
     @blurb = @course.lecture_notes_blurb
   end
   

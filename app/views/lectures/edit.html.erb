@@ -3,6 +3,16 @@
 
 <h3>Edit lecture schedule</h3>
 
+<% form_for @course, :lectures, :url => course_lectures_path(@course) do |form| %>
+  <%= form.error_messages %>
+  <table>
+    <tr>
+      <td><%= render_blurb_edit_form 'lectures', @blurb %></td>
+      <td><%= form.submit "Update blurb" %></td>
+    </tr>    
+  </table>
+<% end %>
+
 <script type="text/javascript">
   function pickDatesForm(id) {
     // Note that we need some CSS such as div.ui-datepicker { z-index: 1000; }
@@ -17,7 +27,7 @@
     { :field => "id", :label => "ID", :sortable => false, :hidden => true },
     { :field => "number", :label => "Lecture number", :sortable => true, :editable => true },
     { :field => "lecture_dates_string", :label => "Dates", :sortable => false, :editable => true,
-      :editoptions => { :dataInit => "js:pickDatesForm" } },
+      :search => false, :editoptions => { :dataInit => "js:pickDatesForm" } },
     { :field => "topics", :label => "Topics", :width => 400, :sortable => false, :editable => true,
       :edittype => "textarea", :editoptions => { :rows => 5, :cols => 50 } },
     { :field => "readings", :label => "Readings", :width => 400, :sortable => false, :editable => true,

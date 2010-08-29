@@ -2,5 +2,5 @@
 <% @title = 'New course' %>
 
 <% form_for(@course) do |form| %>
-  <%= render :partial => "course_form_fields", :locals  => { :form => form, :submit => 'Create' } %>
+  <%= render :partial => "course_form_fields", :locals  => { :form => form, :submit => 'Create', :course => @course, :people => @people } %>
 <% end %>

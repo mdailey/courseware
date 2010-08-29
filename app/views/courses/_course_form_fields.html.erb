@@ -1,6 +1,4 @@
 
-<% people = Person.find(:all) %>
-
 <%= form.error_messages %>
 
 <p>
@@ -21,12 +19,12 @@
 </p>
 <p>
   <%= form.label :instructors %>
-  <%= render :partial => "course_instructor", :collection => @course.course_instructors.select { |ci| ci.role == 'main' }, :locals => { :people => people, :rolename => 'Instructor' } %>
+  <%= render :partial => "course_instructor", :collection => course.course_instructors.select { |ci| ci.role == 'main' }, :locals => { :people => people, :rolename => 'Instructor' } %>
 </p>
 <br/>
 <p>
   <%= form.label :tas, 'TAs' %>
-  <%= render :partial => "course_instructor", :collection => @course.course_instructors.select { |ci| ci.role == 'ta' }, :locals => { :people => people, :rolename => 'TA' } %>
+  <%= render :partial => "course_instructor", :collection => course.course_instructors.select { |ci| ci.role == 'ta' }, :locals => { :people => people, :rolename => 'TA' } %>
 </p>
 <br/>
 <p>

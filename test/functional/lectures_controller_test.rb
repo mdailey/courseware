@@ -17,9 +17,9 @@ class LecturesControllerTest < ActionController::TestCase
   end
 
   test "should obey role access" do
-    assert_users_access( { :admin => true, :quentin => true  }, "index" )
-    assert_users_access( { :admin => true, :quentin => false  }, "edit" )
-    assert_users_access( { :admin => true, :quentin => false  }, "update" )
+    assert_users_access( { :admin => true, :quentin => true  }, "index", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => false  }, "edit", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => false  }, "update", :course_id => 1 )
   end
   
   test "should get edit" do

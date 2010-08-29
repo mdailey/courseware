@@ -4,7 +4,7 @@
 <h3>Edit course info</h3>
 
 <% form_for(@course) do |form| %>
-  <%= render :partial => "course_form_fields", :locals  => { :form => form, :submit => 'Update' } %>
+  <%= render :partial => "course_form_fields", :locals  => { :form => form, :submit => 'Update', :course => @course, :people => @people } %>
 <% end %>
 
 <script>

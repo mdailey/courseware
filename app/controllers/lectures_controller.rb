@@ -1,10 +1,11 @@
 class LecturesController < ApplicationController
   require_role 'admin', :for_all_except => [:index]
   
+  before_filter :find_course
+  before_filter :find_blurb, :only => [:index,:edit]
+
   def index
-    @course = Course.find(params[:course_id])
     @lectures = @course.lectures
-    @blurb = @course.lectures_blurb
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,45 +14,31 @@ class LecturesController < ApplicationController
   end
 
   def edit
-    @course = Course.find(params[:course_id])
-    @blurb = @course.lectures_blurb
-    @use_jqgrid = true
+    setup_for_edit
     
-    page = params[:page]
-
-    rows = params[:rows]
-    if !rows || rows.length == 0 || rows.to_i <= 0
-      rows = @course.lectures.count
-    end
-
-    sidx = params[:sidx]
-    if !sidx or sidx.length == 0
-      sidx = "number"
-    end
-
-    sord = params[:sord]
-    if !sord or sord.length == 0
-      sord = "asc"
-    end
- 
-    @course_lectures = @course.lectures.find(:all) do
-      if params[:_search] == "true"
-        topics    =~ "%#{params[:topics]}%" if params[:topics].present?
-        readings  =~ "%#{params[:readings]}%" if params[:readings].present?
-      end
-      paginate :page => page, :rows => rows
-      order_by "#{sidx} #{sord}"
-    end
-
     respond_to do |format|
       format.html
       format.json { render :json => @course_lectures.to_jqgrid_json([:id,:number,:lecture_dates_string,:topics,:readings], 
-                                                         page, rows, @course_lectures.total_entries) }
+                                                         @page, @rows, @course_lectures.total_entries) }
     end
   end
-
+     
   def update
-    if params[:oper] == "del"
+    if params[:commit] == "Update blurb"
+      respond_to do |format|
+        if @course.update_attributes(params[:course])
+          format.html { redirect_to(edit_course_lectures_path(@course), :notice => 'Blurb successfully updated.') }
+          format.xml  { head :ok }
+        else
+          format.html do
+            setup_for_edit
+            render :action => "edit"
+          end
+          format.xml  { render :xml => @course.errors, :status => :unprocessable_entity }
+        end
+      end
+      return
+    elsif params[:oper] == "del"
       Lecture.find(params[:id]).destroy
     else
       lecture_params = { :number => params[:number], :lecture_dates_string => params[:lecture_dates_string], :topics => params[:topics],
@@ -77,6 +64,48 @@ class LecturesController < ApplicationController
     end
 
     render :text => "#{err}"
+  end
+
+  protected
+  
+  def find_course
+    @course = Course.find(params[:course_id])
+  end
+      
+  def find_blurb
+    @blurb = @course.lectures_blurb
+  end
+    
+  def setup_for_edit
+    @use_jqgrid = true
+    
+    @page = params[:page]
+
+    @rows = params[:rows]
+    if !@rows || @rows.length == 0 || @rows.to_i <= 0
+      @rows = @course.lectures.count
+    end
+
+    sidx = params[:sidx]
+    if !sidx or sidx.length == 0
+      sidx = "number"
+    end
+
+    sord = params[:sord]
+    if !sord or sord.length == 0
+      sord = "asc"
+    end
+ 
+    @course_lectures = @course.lectures.find(:all) do
+      if params[:_search] == "true"
+        number               == params[:number].to_i if params[:number].present?
+        topics               =~ "%#{params[:topics]}%" if params[:topics].present?
+        readings             =~ "%#{params[:readings]}%" if params[:readings].present?
+      end
+      paginate :page => @page, :rows => @rows
+      order_by "#{sidx} #{sord}"
+    end
+
   end
 
 end

@@ -40,11 +40,17 @@ class ReadingsControllerTest < ActionController::TestCase
     put :update, :id => 1, :course_id => 1, :course_reading => { }
     assert_response :unauthorized
   end
+  
+  test "should update blurb" do
+    login_as(:admin)
+    put :update, :course_id => courses(:one).id, :course => { :readings_blurb => { :contents => 'New blurb' }}
+    assert_equal Course.find(courses(:one).id).readings_blurb.contents, 'New blurb'
+  end
 
   test "should obey role access" do
-    assert_users_access( { :admin => true, :quentin => true  }, "index" )
-    assert_users_access( { :admin => true, :quentin => false }, "update" )
-    assert_users_access( { :admin => true, :quentin => false }, "edit" )
+    assert_users_access( { :admin => true, :quentin => true  }, "index", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => false }, "update", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => false }, "edit", :course_id => 1 )
   end
 
 end

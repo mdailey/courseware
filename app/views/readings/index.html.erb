@@ -15,17 +15,7 @@
   <% for r in sorted_course_readings(@course_readings) %>
     <tr class="<%= cycle('odd', 'even') %>">
       <td class="readingcover">
-        <% if r.reading.image_url and r.reading.image_url.length > 0 %>
-          <% if r.reading.sales_info_url %>
-            <a href="<%=h r.reading.sales_info_url %>">
-          <% end %>
-          <img class="readingimg" src="<%=h BOOK_IMAGE_URL_PREFIX + '/' + r.reading.image_url %>" alt="Book cover for <%= h r.reading.title %>"/>
-          <% if r.reading.sales_info_url %>
-            </a>
-          <% end %>
-        <% else %>
-          No cover available.
-        <% end %>
+        <%= reading_cover r.reading %>
       </td>
       <td class="readingstatus"><%= r.required ? 'required' : 'optional' %></td>
       <td class="readingbibinfo"><%= sanitize bibinfo( r.reading ) %></td>

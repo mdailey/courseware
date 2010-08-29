@@ -2,11 +2,11 @@ class HandoutsController < FileListController
 
   protected
   
-  def set_file_list
+  def find_file_list
     @file_list = @course.handouts
   end
   
-  def set_blurb
+  def find_blurb
     @blurb = @course.handouts_blurb
   end
   

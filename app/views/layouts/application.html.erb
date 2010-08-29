@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -59,15 +58,15 @@
   </div>
   
   <div id="content">
-    <% if @course %>
+    <% if @course -%>
       <h2><%= course_title(@course) %></h2>
-    <% end %>
-    <% if notice %>
+    <% end -%>
+    <% if notice -%>
       <p style="color: green"><%= notice %></p>
-    <% end %>
-    <% if flash[:error] %>
+    <% end -%>
+    <% if flash[:error] -%>
       <p style="color: red">Error: <%= flash[:error] %></p>
-    <% end %>   
+    <% end -%>
     <%= yield %>
   </div>
 </div>

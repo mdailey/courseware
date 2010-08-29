@@ -3,14 +3,14 @@ class UsersController < ApplicationController
   # Protect these actions behind an admin login
   # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
-  
+  before_filter :logout, :only => [:create, :activate]
+
   # render new.rhtml
   def new
     @user = User.new
   end
  
   def create
-    logout_keeping_session!
     @user = User.new(params[:user])
     @user.register! if @user && @user.valid?
     success = @user && @user.valid?
@@ -24,7 +24,6 @@ class UsersController < ApplicationController
   end
 
   def activate
-    logout_keeping_session!
     user = User.find_by_activation_code(params[:activation_code]) unless params[:activation_code].blank?
     case
     when (!params[:activation_code].blank?) && user && !user.active?
@@ -65,7 +64,13 @@ class UsersController < ApplicationController
   # supply their old password along with a new one to update it, etc.
 
   protected
-    def find_user
-      @user = User.find(params[:id])
-    end
+  
+  def find_user
+    @user = User.find(params[:id])
   end
+  
+  def logout
+    logout_keeping_session!
+  end
+        
+end

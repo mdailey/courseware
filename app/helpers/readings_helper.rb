@@ -42,5 +42,18 @@ module ReadingsHelper
   def sorted_course_readings(course_readings)
     course_readings.sort {|r1,r2| sort_string(r1.reading) <=> sort_string(r2.reading)}
   end
-  
+
+  def reading_cover(reading)
+    html = ''
+    if reading and reading.image_url and reading.image_url.length > 0
+      html = %Q(<img class="readingimg" src="#{BOOK_IMAGE_URL_PREFIX + '/' + reading.image_url}" alt="Book cover for #{reading.title}"/>)
+      if reading.sales_info_url
+        html = %Q(<a href="#{reading.sales_info_url}">#{html}</a>)
+      end
+    else
+      html = 'No cover available.'
+    end
+    sanitize html
+  end
+
 end

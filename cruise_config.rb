@@ -10,7 +10,7 @@ Project.configure do |project|
   project.email_notifier.from = 'mdailey@ait.ac.th'
 
   # Add metric_fu report to the build
-  project.rake_task = 'metrics:all'
+  project.rake_task = 'build:metrics'
 
   # How often to ping Subversion for new revisions
   project.scheduler.polling_interval = 30.seconds

@@ -43,7 +43,7 @@ class HandoutsControllerTest < ActionController::TestCase
 
   test "should obey role access" do
     assert_users_access( { :admin => true, :quentin => true  }, "index", :course_id => 1 )
-    assert_users_access( { :admin => true, :quentin => true  }, "show", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => true  }, "show", :course_id => 1, :id => 1 )
     assert_users_access( { :admin => true, :quentin => false }, "edit", :course_id => 1 )
     assert_users_access( { :admin => true, :quentin => false }, "update", :course_id => 1 )
   end
@@ -64,6 +64,12 @@ class HandoutsControllerTest < ActionController::TestCase
     assert_redirected_to edit_handouts_path({:course_id => 1})
   end
   
+  test "should update blurb" do
+    login_as(:admin)
+    put_record( {}, false, true, 'New blurb' )
+    assert_equal Course.find(courses(:one).id).handouts_blurb.contents, 'New blurb'
+  end
+  
   test "should delete handout" do
     login_as(:admin)
     assert_difference('Handout.count',-1) do
@@ -79,7 +85,7 @@ class HandoutsControllerTest < ActionController::TestCase
   
   private
   
-  def put_record(options = {}, new=true, existing=true)
+  def put_record(options = {}, new=true, existing=true, blurb='')
     file = fixture_file_upload('files/blank.pdf','application/pdf')
     params = { :course => {
       :new_handout_attributes => new ?
@@ -90,7 +96,7 @@ class HandoutsControllerTest < ActionController::TestCase
         {"1" => { :number => '1', :topic => 'MyString', :file_name => 'handout1.pdf', :file_label => 'PDF'},
          "2" => { :number => '2', :topic => 'MyString', :file_name => 'handout2.pdf', :file_label => 'PDF'}} :
         {"1" => { :number => '1', :topic => 'MyString', :file_name => 'handout1.pdf', :file_label => 'PDF'}},
-      :handouts_blurb => { :contents => "" }},
+      :handouts_blurb => { :contents => "#{blurb}" }},
       :course_id => 1 }.merge(options)
     put :update, params
   end

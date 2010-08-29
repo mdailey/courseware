@@ -3,11 +3,10 @@ class FileListController < ApplicationController
   require_role 'admin', :for_all_except => [:index, :show]
   
   before_filter :find_course
-
+  before_filter :find_file_list, :only => [:index, :edit]
+  before_filter :find_blurb, :only => [:index, :edit]
+  
   def index
-    set_file_list
-    set_blurb
-    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @file_list }
@@ -25,13 +24,10 @@ class FileListController < ApplicationController
   end
   
   def edit
-    set_file_list
-    set_blurb
     @file_list.build
   end
   
   def update
-    find_course
     fix_attributes
 
     respond_to do |format|

@@ -202,13 +202,13 @@ class Course < ActiveRecord::Base
   
   def update_blurb(course_page,attributes)
     bOld = blurb(course_page)
-    bNew = blurbs.new(attributes)
+    bNew = blurbs.build(attributes)
+    logger.debug "bnew: #{bNew.inspect}"
     if bOld and bOld.contents != bNew.contents
       blurbs.delete(bOld)
     end
     if !bOld or bOld.contents != bNew.contents
       bNew.course_page = course_page
-      bNew.course_id = id
       bNew.save
     end
   end
@@ -239,6 +239,10 @@ class Course < ActiveRecord::Base
   
   def lecture_notes_blurb=(attributes)
     update_blurb('lecture_notes',attributes)
+  end
+  
+  def lectures_blurb=(attributes)
+    update_blurb('lectures',attributes)
   end
   
   def resources_blurb

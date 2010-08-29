@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100812075206) do
+ActiveRecord::Schema.define(:version => 20100827203711) do
 
   create_table "announcements", :force => true do |t|
     t.integer  "course_id"
@@ -19,12 +19,16 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "updated_at"
   end
 
+  add_index "announcements", ["course_id"], :name => "index_announcements_on_course_id"
+
   create_table "assignment_files", :force => true do |t|
     t.integer  "assignment_id"
     t.binary   "file_data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "assignment_files", ["assignment_id"], :name => "index_assignment_files_on_assignment_id"
 
   create_table "assignments", :force => true do |t|
     t.integer  "course_id"
@@ -38,6 +42,8 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "updated_at"
   end
 
+  add_index "assignments", ["course_id"], :name => "index_assignments_on_course_id"
+
   create_table "blurbs", :force => true do |t|
     t.integer  "course_id"
     t.string   "course_page"
@@ -45,6 +51,8 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "blurbs", ["course_id"], :name => "index_blurbs_on_course_id"
 
   create_table "course_instructors", :force => true do |t|
     t.integer  "course_id"
@@ -54,6 +62,9 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "updated_at"
   end
 
+  add_index "course_instructors", ["course_id"], :name => "index_course_instructors_on_course_id"
+  add_index "course_instructors", ["person_id"], :name => "index_course_instructors_on_person_id"
+
   create_table "course_readings", :force => true do |t|
     t.integer  "course_id"
     t.integer  "reading_id"
@@ -62,6 +73,9 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "updated_at"
   end
 
+  add_index "course_readings", ["course_id"], :name => "index_course_readings_on_course_id"
+  add_index "course_readings", ["reading_id"], :name => "index_course_readings_on_reading_id"
+
   create_table "course_resources", :force => true do |t|
     t.integer  "course_id"
     t.integer  "resource_group_id"
@@ -69,6 +83,9 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "course_resources", ["course_id"], :name => "index_course_resources_on_course_id"
+  add_index "course_resources", ["resource_group_id"], :name => "index_course_resources_on_resource_group_id"
 
   create_table "courses", :force => true do |t|
     t.string   "name"
@@ -92,12 +109,16 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "updated_at"
   end
 
+  add_index "exams", ["course_id"], :name => "index_exams_on_course_id"
+
   create_table "handout_files", :force => true do |t|
     t.integer  "handout_id"
     t.binary   "file_data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "handout_files", ["handout_id"], :name => "index_handout_files_on_handout_id"
 
   create_table "handouts", :force => true do |t|
     t.integer  "course_id"
@@ -109,12 +130,16 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "updated_at"
   end
 
+  add_index "handouts", ["course_id"], :name => "index_handouts_on_course_id"
+
   create_table "lecture_dates", :force => true do |t|
-    t.integer  "lecture_id"
     t.date     "date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "lecture_id"
   end
+
+  add_index "lecture_dates", ["lecture_id"], :name => "index_lecture_dates_on_lecture_id"
 
   create_table "lecture_note_files", :force => true do |t|
     t.integer  "lecture_note_id"
@@ -122,6 +147,8 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "lecture_note_files", ["lecture_note_id"], :name => "index_lecture_note_files_on_lecture_note_id"
 
   create_table "lecture_notes", :force => true do |t|
     t.integer  "course_id"
@@ -133,6 +160,8 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "updated_at"
   end
 
+  add_index "lecture_notes", ["course_id"], :name => "index_lecture_notes_on_course_id"
+
   create_table "lectures", :force => true do |t|
     t.integer  "course_id"
     t.integer  "number"
@@ -141,6 +170,8 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "lectures", ["course_id"], :name => "index_lectures_on_course_id"
 
   create_table "menu_actions", :force => true do |t|
     t.integer  "course_id"
@@ -151,6 +182,8 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "updated_at"
     t.string   "path"
   end
+
+  add_index "menu_actions", ["course_id"], :name => "index_menu_actions_on_course_id"
 
   create_table "people", :force => true do |t|
     t.string   "firstname"
@@ -186,6 +219,8 @@ ActiveRecord::Schema.define(:version => 20100812075206) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "resources", ["resource_group_id"], :name => "index_resources_on_resource_group_id"
 
   create_table "roles", :force => true do |t|
     t.string "name"

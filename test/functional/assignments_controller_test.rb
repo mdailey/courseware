@@ -29,7 +29,7 @@ class AssignmentsControllerTest < ActionController::TestCase
   
   test "should obey role access" do
     assert_users_access( { :admin => true, :quentin => true  }, "index", :course_id => 1 )
-    assert_users_access( { :admin => true, :quentin => true  }, "show", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => true  }, "show", :course_id => 1, :id => 1 )
   end
   
 end
