@@ -34,10 +34,31 @@ class LecturesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "instructor should get edit" do
+    login_as(:waheed)
+    get :edit, :course_id => courses(:two).to_param
+    assert_response :success
+  end
+
+  test "instructor should get edit json" do
+    login_as(:waheed)
+    get :edit, :course_id => courses(:two).to_param, :format => 'json'
+    assert_response :success
+  end
+
   test "should fail to get edit" do
     get :edit, :course_id => courses(:one).to_param
     assert_response :unauthorized
+  end
+  
+  test "user should fail to get edit" do
     login_as(:quentin)
+    get :edit, :course_id => courses(:one).to_param
+    assert_response :unauthorized
+  end
+  
+  test "instructor should fail to get edit" do
+    login_as(:waheed)
     get :edit, :course_id => courses(:one).to_param
     assert_response :unauthorized
   end
@@ -46,6 +67,14 @@ class LecturesControllerTest < ActionController::TestCase
     login_as(:admin)
     assert_difference('Lecture.count') do
       post_record
+    end
+    assert_response :success
+  end
+
+  test "instructor should create lecture" do
+    login_as(:waheed)
+    assert_difference('Lecture.count') do
+      post_record({ :course_id => 2 })
     end
     assert_response :success
   end

@@ -14,13 +14,15 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password
   
   def access_denied
-    render :template => 'shared/denied', :status => 401
+    render :template => 'shared/denied.html', :status => 401
     return false
   end
 
   def authorized?(action, resource=nil)
     if resource and resource.is_a? Class
       resource.user_authorized_for? current_user, {:action => action}, binding
+    elsif resource.is_a? Course
+      resource.user_authorized_for? current_user, action
     else
       self.class.user_authorized_for? current_user, {:action => action}, binding
     end

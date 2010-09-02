@@ -1,6 +1,7 @@
 class LecturesController < ApplicationController
-  require_role 'admin', :for_all_except => [:index]
   
+  require_role ['admin','instructor'], :for => [:update, :edit]
+
   before_filter :find_course
   before_filter :find_blurb, :only => [:index,:edit]
 
@@ -14,6 +15,11 @@ class LecturesController < ApplicationController
   end
 
   def edit
+    if !@course.user_authorized_for?(current_user,:edit)
+      access_denied
+      return
+    end
+    
     setup_for_edit
     
     respond_to do |format|
@@ -24,6 +30,11 @@ class LecturesController < ApplicationController
   end
      
   def update
+    if !@course.user_authorized_for?(current_user,:edit)
+      access_denied
+      return
+    end
+    
     if params[:commit] == "Update blurb"
       respond_to do |format|
         if @course.update_attributes(params[:course])
@@ -83,7 +94,11 @@ class LecturesController < ApplicationController
 
     @rows = params[:rows]
     if !@rows || @rows.length == 0 || @rows.to_i <= 0
-      @rows = @course.lectures.count
+      if @course.lectures.count > 0
+        @rows = @course.lectures.count
+      else
+        @rows = 20
+      end
     end
 
     sidx = params[:sidx]

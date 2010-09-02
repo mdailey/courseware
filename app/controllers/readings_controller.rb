@@ -1,6 +1,7 @@
 class ReadingsController < ApplicationController
-  require_role 'admin', :for_all_except => [:index]
   
+  require_role ['admin','instructor'], :for => [:update, :edit]
+
   before_filter :find_course
   before_filter :find_blurb, :only => [:index, :edit]
   before_filter :find_course_readings, :only => [:index, :edit]

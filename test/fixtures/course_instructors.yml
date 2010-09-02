@@ -19,3 +19,9 @@ four:
   course_id: 1
   person: bobsmith
   role: ta
+  
+five:
+  course_id: 2
+  person: waheed
+  role: main
+  

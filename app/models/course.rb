@@ -257,4 +257,8 @@ class Course < ActiveRecord::Base
     blurb('assignments')
   end
   
+  def user_authorized_for?(user,action)
+    action == :show or action == :static or ( user and user.has_role? :admin ) or (user and instructors.select { |i| i.user_id == user.id }.size > 0)
+  end
+  
 end

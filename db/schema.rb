@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100827203711) do
+ActiveRecord::Schema.define(:version => 20100902061113) do
 
   create_table "announcements", :force => true do |t|
     t.integer  "course_id"
@@ -133,10 +133,10 @@ ActiveRecord::Schema.define(:version => 20100827203711) do
   add_index "handouts", ["course_id"], :name => "index_handouts_on_course_id"
 
   create_table "lecture_dates", :force => true do |t|
+    t.integer  "lecture_id"
     t.date     "date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "lecture_id"
   end
 
   add_index "lecture_dates", ["lecture_id"], :name => "index_lecture_dates_on_lecture_id"
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(:version => 20100827203711) do
     t.string   "lastname"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   create_table "readings", :force => true do |t|

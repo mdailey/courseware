@@ -12,6 +12,19 @@ quentin:
   state:                     active
   roles:                     user_role
       
+waheed:
+  login:                     waheed
+  email:                     waheed@example.com
+  salt:                      356a192b7913b04c54574d18c28d46e6395428ab # SHA1('0')
+  crypted_password:          026796e76dc82f589937d09f92ef83953e124d86 # 'monkey'
+  created_at:                <%= 5.days.ago.to_s :db  %>
+  remember_token_expires_at: <%= 1.days.from_now.to_s %>
+  remember_token:            77de68daecd823babbb58edb1c8e14d7106e83bb
+  activation_code:           
+  activated_at:              <%= 5.days.ago.to_s :db %>
+  state:                     active
+  roles:                     instructor_role
+      
 aaron:
   login:                     aaron
   email:                     aaron@example.com

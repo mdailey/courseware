@@ -1,6 +1,6 @@
 class FileListController < ApplicationController
 
-  require_role 'admin', :for_all_except => [:index, :show]
+  require_role ['admin','instructor'], :for => [:update, :edit]
   
   before_filter :find_course
   before_filter :find_file_list, :only => [:index, :edit]
@@ -24,10 +24,20 @@ class FileListController < ApplicationController
   end
   
   def edit
+    if !@course.user_authorized_for?(current_user,:edit)
+      access_denied
+      return
+    end
+
     @file_list.build
   end
   
   def update
+    if !@course.user_authorized_for?(current_user,:edit)
+      access_denied
+      return
+    end
+    
     fix_attributes
 
     respond_to do |format|

@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
-  require_role 'admin', :for_all_except => [:index, :show, :static]
+  require_role 'admin', :for => [:new, :create, :clone, :destroy]
+  require_role ['admin','instructor'], :for => [:update, :edit]
   before_filter :store_location
   before_filter :find_course, :except => [:index, :new, :create]
   before_filter :find_people, :only => [:edit, :new, :clone]
@@ -39,6 +40,11 @@ class CoursesController < ApplicationController
 
   # GET /courses/1/edit
   def edit
+    if !@course.user_authorized_for?(current_user,:edit)
+      access_denied
+      return
+    end
+    
     setup_for_edit
   end
 
@@ -70,6 +76,11 @@ class CoursesController < ApplicationController
   # PUT /courses/1
   # PUT /courses/1.xml
   def update
+    if !@course.user_authorized_for?(current_user,:edit)
+      access_denied
+      return
+    end
+    
     fix_instructors(params)
 
     respond_to do |format|

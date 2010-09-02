@@ -41,11 +41,23 @@ class LectureNotesControllerTest < ActionController::TestCase
     assert_response :unauthorized
   end
 
+  test "instructor should fail to get edit" do
+    login_as(:waheed)
+    get :edit, :course_id => courses(:one).to_param
+    assert_response :unauthorized
+  end
+
+  test "instructor should get edit" do
+    login_as(:waheed)
+    get :edit, :course_id => courses(:two).to_param
+    assert_response :success
+  end
+
   test "should obey role access" do
-    assert_users_access( { :admin => true, :quentin => true  }, "index", :course_id => 1 )
-    assert_users_access( { :admin => true, :quentin => true  }, "show", :course_id => 1, :id => 1 )
-    assert_users_access( { :admin => true, :quentin => false }, "edit", :course_id => 1 )
-    assert_users_access( { :admin => true, :quentin => false }, "update", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "index", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "show", :course_id => 1, :id => 1 )
+    assert_users_access( { :admin => true, :quentin => false, :waheed => true  }, "edit", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => false, :waheed => true  }, "update", :course_id => 1 )
   end
   
   test "should add lecture note" do

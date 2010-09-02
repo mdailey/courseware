@@ -15,3 +15,8 @@ bobsmith:
 janedoe:
   firstname: Jane
   lastname: Doe
+
+waheed:
+  firstname: Waheed
+  lastname: Iqbal
+  user: waheed
