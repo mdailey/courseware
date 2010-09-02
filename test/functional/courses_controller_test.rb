@@ -38,6 +38,22 @@ class CoursesControllerTest < ActionController::TestCase
     assert_redirected_to edit_course_path(assigns(:course))
   end
 
+  test "should clone course" do
+    login_as(:admin)
+    assert_difference('Course.count') do
+      get :clone, :id => courses(:one).to_param
+    end
+    assert_redirected_to edit_course_path(assigns(:new_course))
+  end
+
+  test "should fail to clone course" do
+    get :clone, :id => courses(:one).to_param
+    assert_response :unauthorized
+    login_as(:quentin)
+    get :clone, :id => courses(:one).to_param
+    assert_response :unauthorized
+  end
+
   test "should fail to create course" do
     assert_no_difference('Course.count') do
       post :create, :course => { }
@@ -99,6 +115,7 @@ class CoursesControllerTest < ActionController::TestCase
     assert_users_access( { :admin => true, :quentin => false }, "update", :id => 1 )
     assert_users_access( { :admin => true, :quentin => false }, "edit", :id => 1 )
     assert_users_access( { :admin => true, :quentin => false }, "create" )
+    assert_users_access( { :admin => true, :quentin => false }, "clone", :id => 1 )
   end
 
 end

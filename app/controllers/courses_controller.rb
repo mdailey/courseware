@@ -2,8 +2,8 @@ class CoursesController < ApplicationController
   require_role 'admin', :for_all_except => [:index, :show, :static]
   before_filter :store_location
   before_filter :find_course, :except => [:index, :new, :create]
-  before_filter :find_people, :only => [:edit, :new]
-  before_filter :build_course_instructors, :only => [:edit, :new]
+  before_filter :find_people, :only => [:edit, :new, :clone]
+  before_filter :build_course_instructors, :only => [:edit, :new, :clone]
 
   # GET /courses
   def index
@@ -85,6 +85,32 @@ class CoursesController < ApplicationController
       else
         setup_for_edit
         format.html { render :action => "edit" }
+        format.xml  { render :xml => @course.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+  
+  # GET /courses/1/clone
+  def clone
+    @new_course = @course.clone
+    @new_course.semester = Date::MONTHNAMES[Time.now.month]
+    @new_course.year = Time.now.year
+    begin
+      Course.transaction do
+        @new_course.save
+        @new_course.menu_actions = @course.menu_actions.collect { |ma| ma.clone }
+        @new_course.blurbs = @course.blurbs.collect { |b| b.clone }
+        @new_course.course_instructors = @course.course_instructors.collect { |ci| ci.clone }
+        @new_course.course_readings = @course.course_readings.collect { |cr| cr.clone }
+        @new_course.course_resources = @course.course_resources.collect { |cr| cr.clone }
+        @new_course.exams = @course.exams.collect { |e| e.clone }
+        @new_course.save
+      end
+      redirect_to(edit_course_path(@new_course), :notice => 'Course was successfully cloned.')
+    rescue
+      @course = @new_course
+      respond_to do |format|
+        format.html { render :action => "new" }
         format.xml  { render :xml => @course.errors, :status => :unprocessable_entity }
       end
     end

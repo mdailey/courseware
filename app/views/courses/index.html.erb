@@ -13,8 +13,11 @@
     <tr class="<%= cycle('odd', 'even') %>">
       <td class="courselistcourse"><a href="<%= course_path( course ) %>"><%=h course.code %>: <%=h course.name %></a></td>
       <td class="courselistwhen"><%= h course.semester %> <%=h course.year %></td>
-      <% if authorized?(:delete, @course) %>
+      <% if authorized?(:delete, course) %>
         <td><%= link_to 'Delete', course, :confirm => 'Are you sure?', :method => :delete %></td>
+      <% end %>
+      <% if authorized?(:clone, course) %>
+        <td><%= link_to 'Clone', clone_course_path(course) %></td>
       <% end %>
     </tr>
   <% end %>

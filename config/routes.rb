@@ -12,6 +12,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'courses/:course_id/readings', :controller => 'readings', :action => 'update', :conditions => { :method => :put }
   map.connect 'courses/:course_id/lectures', :controller => 'lectures', :action => 'update', :conditions => { :method => :put }
   
+  map.clone_course 'courses/:id/clone', :controller => 'courses', :action => 'clone'
+  
   map.resources :users, :member => { :suspend => :put, :unsuspend => :put, :purge => :delete }
   
   map.resources :courses, :has_many => [ :menu_actions, :lectures, :lecture_notes, :handouts, :exams, :readings, :resource_groups, :assignments ]
