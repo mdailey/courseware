@@ -55,7 +55,9 @@ module Authentication
         return if password.blank?
         self.salt = self.class.make_token if new_record?
         self.crypted_password = encrypt(password)
+        self.password = self.password_confirmation = nil
       end
+      
       def password_required?
         crypted_password.blank? || !password.blank?
       end

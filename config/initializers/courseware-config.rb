@@ -1,6 +1,13 @@
 
 # Configuration file for courseware application
 
+# Site prefix
+if ENV['RAILS_ENV'] == 'production'
+  SITE_PREFIX = 'http://www2.cs.ait.ac.th/~mdailey'
+else
+  SITE_PREFIX = 'http://localhost:3000'
+end
+
 # Name of the icon to use in the browser for yor site instead of favicon.ico
 ICON_IMAGE = 'aiticon.ico'
 
@@ -30,8 +37,14 @@ else
 end
 
 # ActionMailer constants
-SITE_URL = 'localhost:3000'
+SITE_URL = 'http://www2.cs.ait.ac.th/~mdailey/courses'
 ADMIN_EMAIL = 'mdailey@ait.ac.th'
+
+ActionMailer::Base.smtp_settings = {
+  :address  => "mail.cs.ait.ac.th",
+  :port  => 25,
+  :domain  => "cs.ait.ac.th"
+}
 
 # Javascript to tag on to the end of the page
 

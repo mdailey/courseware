@@ -17,6 +17,8 @@ begin
 
     desc "Run metrics"
     task :metrics => :fixtmp do |t|
+      Rake::Task['db:migrate'].invoke
+      Rake::Task['default'].invoke
       Rake::Task['metrics:all'].invoke
     end
 

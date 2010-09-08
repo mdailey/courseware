@@ -26,8 +26,34 @@ class User < ActiveRecord::Base
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :name, :password, :password_confirmation
+  attr_accessible :login, :email, :name, :password, :password_confirmation, :old_password
 
+  # For edit-profile requests  
+  attr_accessor :old_password
+  validates_presence_of :old_password, :if => :old_password_required?
+  after_save :clear_password_fields
+
+  #validates_each :old_password, :if => :old_password_required? do |user, attr, old_password|
+  validate :if => :old_password_required? do |user|
+    if !user.authenticated?(user.old_password)
+      user.errors.add(:old_password, 'is incorrect')
+      false
+    else
+      true
+    end
+  end
+  
+  def old_password_required?
+    return false if crypted_password.blank?
+    return false if self.new_record?
+    return true if !password.blank?
+    !User.attr_accessible.intersection(self.changed).empty?
+  end
+
+  def clear_password_fields
+    password = password_confirmation = old_password = nil
+  end
+  
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
   # uff.  this is really an authorization, not authentication routine.  

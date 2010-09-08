@@ -6,10 +6,8 @@ of standard Web pages for the courses they are teaching.
 
 After installing the application, there are a few things to do:
  - Edit config/initializers/courseware-config.rb
- - Take care of config/initializers/site_keys.rb
  - Take care of config/database.yml and config/initializers/site_keys.rb
  - rake db:create, rake db:migrate, rake gems:install
  - Change icons in public/images
  - Edit style.css to suit you
-
 

@@ -88,10 +88,11 @@ SimpleNavigation::Configuration.run do |navigation|
       end
     end
 
-    if logged_in?
+    if logged_in? and @current_user and !@current_user.id.blank?
+      primary.item :profile, 'Profile', user_path(@current_user), { :class => 'user' }
       primary.item :logout, 'Logout', logout_path, { :class => 'user' }
     end
-    
+ 
     # Add an item which has a sub navigation (same params, but with block)
     #primary.item :key_2, 'name', 'url2', options do |sub_nav|
       # Add an item to the sub navigation (same params again)

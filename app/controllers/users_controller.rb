@@ -1,19 +1,53 @@
 class UsersController < ApplicationController
   
   # Protect these actions behind an admin login
-  # before_filter :admin_required, :only => [:suspend, :unsuspend, :destroy, :purge]
-  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge]
+  require_role 'admin', :for => [:suspend, :unsuspend, :destroy, :purge]
+
+  # Factor out common code across actions
+  before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :update, :show]
   before_filter :logout, :only => [:create, :activate]
+
+  # Show a form with the user's profile informaiton
+  def show
+    if !logged_in? or !current_user or !(current_user.has_role?(:admin) or current_user.id == @user.id)
+      access_denied
+      return
+    end
+    respond_to do |format|
+      format.html { render :action => "edit" }
+      format.xml  { render :xml => @user }
+    end
+  end
 
   # render new.rhtml
   def new
     @user = User.new
   end
  
+  def update
+    if !logged_in? or !current_user or !(current_user.has_role? :admin or current_user.id == @user.id)
+      access_denied
+      return
+    end
+    respond_to do |format|
+      if @user.update_attributes(params[:user])
+        format.html { redirect_to(user_path(@user), :notice => 'Profile was successfully updated.') }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+      
   def create
     @user = User.new(params[:user])
-    @user.register! if @user && @user.valid?
+    if @user && @user.valid?
+      @user.register!
+    end
+    logger.debug "Registered user #{@user.inspect} with errors #{@user.errors.inspect}"
     success = @user && @user.valid?
+    logger.debug "Validated user #{@user.inspect} with errors #{@user.errors.inspect}"
     if success && @user.errors.empty?
       redirect_back_or_default('/')
       flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
@@ -59,10 +93,6 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
   
-  # There's no page here to update or destroy a user.  If you add those, be
-  # smart -- make sure you check that the visitor is authorized to do so, that they
-  # supply their old password along with a new one to update it, etc.
-
   protected
   
   def find_user

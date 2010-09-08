@@ -2,8 +2,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def test_counts
-    assert_equal 4, User.count
-    assert_equal 2, Role.count
+    assert_equal 5, User.count
+    assert_equal 3, Role.count
     assert_equal 1, users(:quentin).roles.count
     assert_equal 1, users(:admin).roles.count
   end
@@ -56,13 +56,33 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_should_reset_password
-    users(:quentin).update_attributes(:password => 'new password', :password_confirmation => 'new password')
+    users(:quentin).update_attributes(:password => 'new password', :password_confirmation => 'new password', :old_password => 'monkey')
     assert_equal users(:quentin), User.authenticate('quentin', 'new password')
   end
 
+  def test_should_require_old_password
+    u = users(:quentin)
+    u.update_attributes(:password => 'new password', :password_confirmation => 'new password')
+    assert u.errors.on(:old_password)
+    u.errors.clear
+    u.update_attributes(:login => 'newlogin')
+    assert u.errors.on(:old_password)
+    u.errors.clear
+    u.update_attributes(:email => 'newemail@email.com')
+    assert u.errors.on(:old_password)
+    u.errors.clear
+    u.update_attributes(:name => 'New Name')
+    assert u.errors.on(:old_password)
+  end
+
   def test_should_not_rehash_password
-    users(:quentin).update_attributes(:login => 'quentin2')
+    users(:quentin).update_attributes(:login => 'quentin2', :old_password => 'monkey')
     assert_equal users(:quentin), User.authenticate('quentin2', 'monkey')
+  end
+  
+  def test_should_update_fields
+    users(:quentin).update_attributes(:login => 'quentin2', :email => 'newemail@email.com', :name => 'New name', :old_password => 'monkey')
+    assert users(:quentin).errors.empty?
   end
 
   def test_should_authenticate_user
@@ -112,6 +132,7 @@ class UserTest < ActiveSupport::TestCase
     user = create_user(:password => nil, :password_confirmation => nil)
     assert user.passive?
     user.update_attributes(:password => 'new password', :password_confirmation => 'new password')
+    user.password = user.password_confirmation = nil
     user.register!
     assert user.pending?
   end

@@ -1,0 +1,22 @@
+
+<p><%= label_tag 'login', 'Username' %><br/>
+<%= form.text_field :login %></p>
+
+<p><%= label_tag 'name', 'Name' %><br/>
+<%= form.text_field :name %></p>
+
+<p><%= label_tag 'email', 'Email' %><br/>
+<%= form.text_field :email %></p>
+
+<% if !user.new_record? %>
+<p><%= label_tag 'old_password', 'Old Password' %><br/>
+<%= form.password_field :old_password %></p>
+<% end %>
+
+<p><%= label_tag 'password', user.new_record? ? 'Password' : 'New Password' %><br/>
+<%= form.password_field :password %></p>
+
+<p><%= label_tag 'password_confirmation', user.new_record? ? 'Confirm Password' : 'Confirm New Password' %><br/>
+<%= form.password_field :password_confirmation %></p>
+
+<p><%= submit_tag submit_text %></p>
