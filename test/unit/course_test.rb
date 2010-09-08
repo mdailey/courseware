@@ -36,6 +36,18 @@ class CourseTest < ActiveSupport::TestCase
       assert c.errors.on(:code)
     end
   end
+  
+  def test_should_destroy_course
+    assert_difference 'Course.count', -1 do
+      courses(:one).destroy
+    end
+  end
+
+  def test_should_destroy_course
+    assert_difference 'Course.count', -1 do
+      courses(:one).destroy
+    end
+  end
 
   private
   

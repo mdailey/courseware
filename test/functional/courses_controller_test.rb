@@ -48,6 +48,14 @@ class CoursesControllerTest < ActionController::TestCase
     assert_response :unauthorized
   end
 
+  test "instructor should fail to create course" do
+    login_as(:waheed)
+    assert_no_difference('Course.count') do
+      post :create, :course => { }
+    end
+    assert_response :unauthorized
+  end
+
   test "should clone course" do
     login_as(:admin)
     assert_difference('Course.count') do
@@ -69,6 +77,8 @@ class CoursesControllerTest < ActionController::TestCase
   
   test "instructor should fail to clone course" do
     login_as(:waheed)
+    get :clone, :id => courses(:two).to_param
+    assert_response :unauthorized
     get :clone, :id => courses(:one).to_param
     assert_response :unauthorized
   end
