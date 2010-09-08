@@ -260,7 +260,7 @@ class Course < ActiveRecord::Base
   def user_authorized_for?(user, action)
     return true if action == :show or action == :static
     return true if user and user.has_role? :admin
-    return false if action == :destroy or action == :clone
+    return false if action != :edit
     user and instructors.select { |i| i.user_id == user.id }.size > 0
   end
   
