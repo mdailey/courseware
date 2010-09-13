@@ -1,14 +1,32 @@
 class CoursesController < ApplicationController
   require_role 'admin', :for => [:new, :create, :clone, :destroy]
   require_role ['admin','instructor'], :for => [:update, :edit]
+  
   before_filter :store_location
-  before_filter :find_course, :except => [:index, :new, :create]
-  before_filter :find_people, :only => [:edit, :new, :clone]
+  
+  before_filter :except => [:index, :new, :create] do |controller|
+    controller.instance_eval do
+      @course = Course.find(params[:id])
+      @title = @course.code + ':' + @course.name + ', ' + @course.semester + ' ' + @course.year.to_s
+    end
+  end
+      
+  before_filter :find_people, :only => [:edit, :new, :clone, :update, :create]
   before_filter :build_course_instructors, :only => [:edit, :new, :clone]
+
+  # Prevent instructors from editing other instructors' courses  
+  before_filter :only => [:edit, :update] do |controller|
+    controller.instance_eval do
+      if !@course.user_authorized_for?(current_user,:edit)
+        access_denied
+      end
+    end
+  end
 
   # GET /courses
   def index
     @courses = Course.all
+    @title = 'Course list'
 
     respond_to do |format|
       format.html # index.html.erb
@@ -19,7 +37,6 @@ class CoursesController < ApplicationController
   # GET /courses/1
   # GET /courses/1.xml
   def show
-    @title = 'Courses: ' + action_name
     @instructors = @course.main_instructors
     @tas = @course.tas
 
@@ -32,6 +49,7 @@ class CoursesController < ApplicationController
   # GET /courses/new
   # GET /courses/new.xml
   def new
+    @title = 'New course'
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @course }
@@ -40,33 +58,26 @@ class CoursesController < ApplicationController
 
   # GET /courses/1/edit
   def edit
-    if !@course.user_authorized_for?(current_user,:edit)
-      access_denied
-      return
-    end
-    
-    setup_for_edit
   end
 
   # POST /courses
   # POST /courses.xml
   def create
     @course = Course.new(params[:course])
+    @title = 'New course'
 
     respond_to do |format|
-      logger.debug "About to attempt to save"
-      logger.debug @course.inspect
-      logger.debug @course.course_instructors.inspect
       if @course.save
-        format.html {
+        format.html do
           if params[:commit] != 'Create'
             redirect_to(edit_course_path(@course), :notice => 'Course was successfully created.')
           else
             redirect_to(@course, :notice => 'Course was successfully created.')
-          end }
+          end
+        end
         format.xml  { render :xml => @course, :status => :created, :location => @course }
       else
-        build_new_roles
+        build_course_instructors
         format.html { render :action => "new" }
         format.xml  { render :xml => @course.errors, :status => :unprocessable_entity }
       end
@@ -76,11 +87,6 @@ class CoursesController < ApplicationController
   # PUT /courses/1
   # PUT /courses/1.xml
   def update
-    if !@course.user_authorized_for?(current_user,:edit)
-      access_denied
-      return
-    end
-    
     fix_instructors(params)
 
     respond_to do |format|
@@ -94,7 +100,7 @@ class CoursesController < ApplicationController
         end
         format.xml  { head :ok }
       else
-        setup_for_edit
+        build_course_instructors
         format.html { render :action => "edit" }
         format.xml  { render :xml => @course.errors, :status => :unprocessable_entity }
       end
@@ -104,19 +110,9 @@ class CoursesController < ApplicationController
   # GET /courses/1/clone
   def clone
     @new_course = @course.clone
-    @new_course.semester = Date::MONTHNAMES[Time.now.month]
-    @new_course.year = Time.now.year
+    @new_course.set_date
     begin
-      Course.transaction do
-        @new_course.save
-        @new_course.menu_actions = @course.menu_actions.collect { |ma| ma.clone }
-        @new_course.blurbs = @course.blurbs.collect { |b| b.clone }
-        @new_course.course_instructors = @course.course_instructors.collect { |ci| ci.clone }
-        @new_course.course_readings = @course.course_readings.collect { |cr| cr.clone }
-        @new_course.course_resources = @course.course_resources.collect { |cr| cr.clone }
-        @new_course.exams = @course.exams.collect { |e| e.clone }
-        @new_course.save
-      end
+      @new_course.clone_associations!(@course)
       redirect_to(edit_course_path(@new_course), :notice => 'Course was successfully cloned.')
     rescue
       @course = @new_course
@@ -180,14 +176,6 @@ class CoursesController < ApplicationController
     if @course.course_instructors.select { |cr| cr.new_record? and cr.role == 'ta' }.size == 0
       @course.course_instructors.build :role => 'ta'
     end
-  end
-
-  def setup_for_edit
-    @title = 'Courses: ' + action_name
-  end
-
-  def find_course
-    @course = Course.find(params[:id])
   end
 
   def find_people

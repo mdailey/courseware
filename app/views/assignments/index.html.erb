@@ -5,7 +5,7 @@
 
 <%= render_blurb(@blurb) %>
 
-<% has_solns = @assignments.collect {|a| a.soln_fname }.empty? %>
+<% has_solns = @file_list.collect {|a| a.soln_fname }.empty? %>
 
 <table>
   <tr class="tableheading">
@@ -17,7 +17,7 @@
     <% end %>
   </tr>
 
-  <% for a in @assignments.sort { |a1,a2| a1.number <=> a2.number } %>
+  <% for a in @file_list.sort { |a1,a2| a1.number <=> a2.number } %>
     <tr class="<%= cycle('odd', 'even') %>">
       <td class="assignmentnumber"><%=h a.number %></td>
       <td class="assignmenttopic"><%=h a.title %></td>

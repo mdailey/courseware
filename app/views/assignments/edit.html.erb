@@ -1,0 +1,27 @@
+<% @title = 'Edit assignments' %>
+
+<h3>Edit handouts</h3>
+
+<% form_for @course, :assignments, :url => course_assignments_path(@course),
+            :html => { :id => 'course_assignments', :multipart => true } do |form| %>
+  <%= form.error_messages %>
+  <%= render_blurb_edit_form 'assignments', @blurb %>
+  <table class="fileform">
+    <thead>
+      <tr><th>#</th><th>Topic</th><th>Label</th><th>Filename</th><th>File upload</th></tr>
+    </thead>
+    <tbody id="assignments_table">
+      <%= render :partial => "assignment", :collection => @file_list %>
+    </tbody>
+  </table>
+  <%= form.submit "Update assignments" %>
+<% end %>
+
+<script>
+  function remove(id)
+  {
+    var formDiv = document.getElementById('assignments_table');
+    var child = document.getElementById(id);
+    if (formDiv && child) formDiv.removeChild(child);
+  } 
+</script>

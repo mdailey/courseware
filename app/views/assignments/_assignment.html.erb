@@ -1,0 +1,21 @@
+
+<% new_or_existing = assignment.new_record? ? 'new' : 'existing' %>
+<% prefix = "course[#{new_or_existing}_assignment_attributes][]" %>
+
+<% fields_for prefix, assignment do |assignment_form| %>
+  <% if assignment.new_record? %>
+    <tr><th colspan="2" align="left">New assignment:</th></tr>
+  <% end %>
+  <tr id="assignment_<%= assignment.id %>">
+    <td><%= assignment_form.text_field :number, :size => 1 %></td>
+    <td><%= assignment_form.text_field :title, :size => 26 %></td>
+    <td><%= assignment_form.text_field :ps_flabel, :size => 2 %></td>
+    <td><%= assignment_form.text_field :ps_fname, :size => 9 %></td>
+    <td><%= assignment_form.file_field :assignment_file, :size => 7 %></td>
+    <td>
+      <% if !assignment.new_record? %>
+        <%= link_to_function "remove", "remove('assignment_#{assignment.id}')" %>
+      <% end %>        
+    </td>
+  </tr>
+<% end %>

@@ -128,6 +128,29 @@ class Course < ActiveRecord::Base
     end
   end
 
+  def new_assignment_attributes=(new_attributes)
+    new_attributes.each do |attributes|
+      assignment_file = nil
+      if attributes[:assignment_file]
+        attributes[:ps_fname] = attributes[:assignment_file].original_filename
+        file_data = attributes[:assignment_file].read
+        attributes[:assignment_file].delete
+        attributes.delete(:assignment_file)
+        assignment_file = AssignmentFile.new
+        assignment_file.file_data = Base64.encode64 file_data
+      end
+      if (attributes[:number] and attributes[:number].length) > 0 or
+         (attributes[:title] and attributes[:title].length > 0)
+        assignments.build(attributes)
+        if assignment_file
+          assignment = assignments.select {|h| h.new_record?}.first
+          assignment.assignment_file = assignment_file
+          assignment.assignment_file.assignment = assignment
+        end
+      end
+    end
+  end
+  
   def existing_handout_attributes=(handout_attributes)
     handouts.reject(&:new_record?).each do |handout|
       attributes = handout_attributes[handout.id.to_s]
@@ -174,6 +197,31 @@ class Course < ActiveRecord::Base
         end  
       else
         lecture_notes.delete(lecture_note)
+      end
+    end
+  end
+  
+  def existing_assignment_attributes=(assignment_attributes)
+    assignments.reject(&:new_record?).each do |assignment|
+      attributes = assignment_attributes[assignment.id.to_s]
+      if attributes
+        file_data = nil
+        if attributes[:assignment_file]
+          attributes[:file_name] = attributes[:assignment_file].original_filename
+          file_data = attributes[:assignment_file].read
+          attributes[:assignment_file].delete
+          attributes.delete(:assignment_file)
+        end
+        assignment.attributes = attributes
+        if file_data
+          if !assignment.assignment_file
+            assignment.assignment_file = AssignmentFile.new
+            assignment.assignment_file.assignment = assignment
+          end
+          assignment.assignment_file.file_data = Base64.encode64 file_data
+        end  
+      else
+        assignments.delete(assignment)
       end
     end
   end
@@ -241,6 +289,10 @@ class Course < ActiveRecord::Base
     update_blurb('lecture_notes',attributes)
   end
   
+  def assignments_blurb=(attributes)
+    update_blurb('assignments',attributes)
+  end
+  
   def lectures_blurb=(attributes)
     update_blurb('lectures',attributes)
   end
@@ -262,6 +314,25 @@ class Course < ActiveRecord::Base
     return true if user and user.has_role? :admin
     return false if action != :edit
     user and instructors.select { |i| i.user_id == user.id }.size > 0
+  end
+  
+  def clone_associations!(course)
+    Course.transaction do
+      self.save
+      self.menu_actions = course.menu_actions.collect { |ma| ma.clone }
+      self.blurbs = course.blurbs.collect { |b| b.clone }
+      self.course_instructors = course.course_instructors.collect { |ci| ci.clone }
+      self.course_readings = course.course_readings.collect { |cr| cr.clone }
+      self.course_resources = course.course_resources.collect { |cr| cr.clone }
+      self.exams = course.exams.collect { |e| e.clone }
+      self.save
+    end
+  end
+  
+  def set_date
+    time = Time.now
+    self.semester = Date::MONTHNAMES[time.month]
+    self.year = time.year
   end
   
 end

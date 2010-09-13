@@ -6,6 +6,14 @@ class FileListController < ApplicationController
   before_filter :find_file_list, :only => [:index, :edit]
   before_filter :find_blurb, :only => [:index, :edit]
   
+  before_filter :only => [:edit, :update] do |controller|
+    controller.instance_eval do
+      if !@course.user_authorized_for?(current_user, :edit)
+        access_denied
+      end
+    end
+  end
+  
   def index
     respond_to do |format|
       format.html # index.html.erb
@@ -24,20 +32,10 @@ class FileListController < ApplicationController
   end
   
   def edit
-    if !@course.user_authorized_for?(current_user,:edit)
-      access_denied
-      return
-    end
-
     @file_list.build
   end
   
   def update
-    if !@course.user_authorized_for?(current_user,:edit)
-      access_denied
-      return
-    end
-    
     fix_attributes
 
     respond_to do |format|

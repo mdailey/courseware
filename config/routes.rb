@@ -5,10 +5,12 @@ ActionController::Routing::Routes.draw do |map|
 
   map.edit_handouts 'courses/:course_id/handouts/edit', :controller => 'handouts', :action => 'edit', :conditions => { :method => :get }
   map.edit_lecture_notes 'courses/:course_id/lecture_notes/edit', :controller => 'lecture_notes', :action => 'edit', :conditions => { :method => :get }
+  map.edit_assignments 'courses/:course_id/assignments/edit', :controller => 'assignments', :action => 'edit', :conditions => { :method => :get }
   map.edit_course_readings 'courses/:course_id/readings/edit', :controller => 'readings', :action => 'edit', :conditions => { :method => :get }
   
   map.connect 'courses/:course_id/handouts', :controller => 'handouts', :action => 'update', :conditions => { :method => :put }
   map.connect 'courses/:course_id/lecture_notes', :controller => 'lecture_notes', :action => 'update', :conditions => { :method => :put }
+  map.connect 'courses/:course_id/assignments', :controller => 'assignments', :action => 'update', :conditions => { :method => :put }
   map.connect 'courses/:course_id/readings', :controller => 'readings', :action => 'update', :conditions => { :method => :put }
   map.connect 'courses/:course_id/lectures', :controller => 'lectures', :action => 'update', :conditions => { :method => :put }
   

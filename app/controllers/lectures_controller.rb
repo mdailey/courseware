@@ -4,6 +4,14 @@ class LecturesController < ApplicationController
 
   before_filter :find_course
   before_filter :find_blurb, :only => [:index,:edit]
+  
+  before_filter :only => [:edit, :update] do |controller|
+    controller.instance_eval do
+      if !@course.user_authorized_for?(current_user, :edit)
+        access_denied
+      end
+    end
+  end
 
   def index
     @lectures = @course.lectures
@@ -15,11 +23,6 @@ class LecturesController < ApplicationController
   end
 
   def edit
-    if !@course.user_authorized_for?(current_user,:edit)
-      access_denied
-      return
-    end
-    
     setup_for_edit
     
     respond_to do |format|
@@ -30,11 +33,6 @@ class LecturesController < ApplicationController
   end
      
   def update
-    if !@course.user_authorized_for?(current_user,:edit)
-      access_denied
-      return
-    end
-    
     if params[:commit] == "Update blurb"
       respond_to do |format|
         if @course.update_attributes(params[:course])

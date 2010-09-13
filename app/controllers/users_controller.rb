@@ -7,12 +7,16 @@ class UsersController < ApplicationController
   before_filter :find_user, :only => [:suspend, :unsuspend, :destroy, :purge, :update, :show]
   before_filter :logout, :only => [:create, :activate]
 
+  before_filter :only => [:show, :update] do |controller|
+    controller.instance_eval do
+      if !logged_in? or !current_user or !(current_user.has_role?(:admin) or current_user.id == @user.id)
+        access_denied
+      end
+    end
+  end
+
   # Show a form with the user's profile informaiton
   def show
-    if !logged_in? or !current_user or !(current_user.has_role?(:admin) or current_user.id == @user.id)
-      access_denied
-      return
-    end
     respond_to do |format|
       format.html { render :action => "edit" }
       format.xml  { render :xml => @user }
@@ -25,10 +29,6 @@ class UsersController < ApplicationController
   end
  
   def update
-    if !logged_in? or !current_user or !(current_user.has_role? :admin or current_user.id == @user.id)
-      access_denied
-      return
-    end
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to(user_path(@user), :notice => 'Profile was successfully updated.') }
@@ -45,9 +45,7 @@ class UsersController < ApplicationController
     if @user && @user.valid?
       @user.register!
     end
-    logger.debug "Registered user #{@user.inspect} with errors #{@user.errors.inspect}"
     success = @user && @user.valid?
-    logger.debug "Validated user #{@user.inspect} with errors #{@user.errors.inspect}"
     if success && @user.errors.empty?
       redirect_back_or_default('/')
       flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."

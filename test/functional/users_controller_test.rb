@@ -28,6 +28,11 @@ class UsersControllerTest < ActionController::TestCase
     end
   end
   
+  def test_should_get_new
+    get :new
+    assert_response :success
+  end
+  
   def test_should_require_old_password_on_login_change
     put :update, :id => users(:quentin).id.to_s, :user => { :login => 'quire69'}
     assert_response :unauthorized
@@ -152,9 +157,9 @@ class UsersControllerTest < ActionController::TestCase
   end
   
   def test_should_obey_role_access
-    assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "show", :id => users(:quentin).id.to_s )
+    assert_users_access( { :admin => true, :quentin => true,  :waheed => false }, "show", :id => users(:quentin).id.to_s )
     assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "new" )
-    assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "update", :id => users(:quentin).id.to_s )
+    assert_users_access( { :admin => true, :quentin => true,  :waheed => false }, "update", :id => users(:quentin).id.to_s )
     assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "create" )
     assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "activate", :id => users(:quentin).id.to_s )
     assert_users_access( { :admin => true, :quentin => false, :waheed => false }, "suspend", :id => users(:quentin).id.to_s )

@@ -41,6 +41,18 @@ class CoursesControllerTest < ActionController::TestCase
     assert_redirected_to edit_course_path(assigns(:course))
   end
 
+  test "should require course fields" do
+    login_as(:admin)
+    assert_no_difference('Course.count') do
+      post :create, :course => { }
+    end
+    assert_response :success
+    assert assigns(:course).errors.on :year
+    assert assigns(:course).errors.on :semester
+    assert assigns(:course).errors.on :name
+    assert assigns(:course).errors.on :code
+  end
+
   test "should fail to create course" do
     assert_no_difference('Course.count') do
       post :create, :course => { }
@@ -61,6 +73,15 @@ class CoursesControllerTest < ActionController::TestCase
     assert_difference('Course.count') do
       get :clone, :id => courses(:one).to_param
     end
+    course_id = assigns(:new_course).id
+    assert course_id
+    course = Course.find(course_id)
+    assert course.year == Time.now.year
+    assert course.instructors.size > 0
+    assert course.menu_actions.size > 0
+    assert course.blurbs.size > 0
+    assert course.readings.size > 0
+    assert course.resource_groups.size > 0
     assert_redirected_to edit_course_path(assigns(:new_course))
   end
 
@@ -171,14 +192,14 @@ class CoursesControllerTest < ActionController::TestCase
   
   test "should obey role access" do
     assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "index" )
-    assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "show", :id => 1 )
-    assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "static", :id => 1, :static_action => "action" )
-    assert_users_access( { :admin => true, :quentin => false, :waheed => false }, "destroy", :id => 1 )
+    assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "show", :id => courses(:one).to_param )
+    assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "static", :id => courses(:one).to_param, :static_action => "action" )
+    assert_users_access( { :admin => true, :quentin => false, :waheed => false }, "destroy", :id => courses(:one).to_param )
     assert_users_access( { :admin => true, :quentin => false, :waheed => false }, "new" )
-    assert_users_access( { :admin => true, :quentin => false, :waheed => true  }, "update", :id => 1 )
-    assert_users_access( { :admin => true, :quentin => false, :waheed => true  }, "edit", :id => 1 )
+    assert_users_access( { :admin => true, :quentin => false, :waheed => true  }, "update", :id => courses(:two).to_param )
+    assert_users_access( { :admin => true, :quentin => false, :waheed => true  }, "edit", :id => courses(:two).to_param )
     assert_users_access( { :admin => true, :quentin => false, :waheed => false }, "create" )
-    assert_users_access( { :admin => true, :quentin => false, :waheed => false }, "clone", :id => 1 )
+    assert_users_access( { :admin => true, :quentin => false, :waheed => false }, "clone", :id => courses(:one).to_param )
   end
 
 end

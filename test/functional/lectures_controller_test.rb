@@ -17,9 +17,11 @@ class LecturesControllerTest < ActionController::TestCase
   end
 
   test "should obey role access" do
-    assert_users_access( { :admin => true, :quentin => true  }, "index", :course_id => 1 )
-    assert_users_access( { :admin => true, :quentin => false  }, "edit", :course_id => 1 )
-    assert_users_access( { :admin => true, :quentin => false  }, "update", :course_id => 1 )
+    assert_users_access( { :admin => true, :quentin => true,  :waheed => true  }, "index", :course_id => courses(:one).to_param )
+    assert_users_access( { :admin => true, :quentin => false, :waheed => false }, "edit", :course_id => courses(:one).to_param )
+    assert_users_access( { :admin => true, :quentin => false, :waheed => false }, "update", :course_id => courses(:one).to_param )
+    assert_users_access( { :admin => true, :quentin => false, :waheed => true  }, "edit", :course_id => courses(:two).to_param )
+    assert_users_access( { :admin => true, :quentin => false, :waheed => true  }, "update", :course_id => courses(:two).to_param )
   end
   
   test "should get edit" do
