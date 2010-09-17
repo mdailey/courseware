@@ -44,7 +44,7 @@ class FileListController < ApplicationController
         format.xml  { head :ok }
       else
         format.html do
-          set_file_list
+          find_file_list
           if @file_list.select { |h| h.new_record? }.size == 0
             @file_list.build
           end

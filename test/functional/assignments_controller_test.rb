@@ -73,9 +73,29 @@ class AssignmentsControllerTest < ActionController::TestCase
   test "should update assignments" do
     login_as(:admin)
     assert_difference('Assignment.count',0) do
-      put_record( {}, false )
+      put_record( { :course => {
+         :new_assignment_attributes => [{:number=>"", :title=>"", :ps_fname=>"", :ps_flabel=>""}],
+         :existing_assignment_attributes => {
+           "1" => { :number => '1', :title => 'MyString', :ps_fname => 'assignment1.pdf', :ps_flabel => 'PDF'},
+           "2" => { :number => '3', :title => 'MyString2', :ps_fname => 'assignment3.pdf', :ps_flabel => 'PPT'}}}}, false )
     end
+    assignment = Assignment.find(2).reload
+    assert_equal 3, assignment.number
+    assert_equal 'MyString2', assignment.title
+    assert_equal 'assignment3.pdf', assignment.ps_fname
+    assert_equal 'PPT', assignment.ps_flabel
     assert_redirected_to edit_assignments_path({:course_id => 1})
+  end
+  
+  test "should fail to update assignments" do
+    login_as(:admin)
+    put_record( { :course => {
+       :new_assignment_attributes => [{:number=>"", :title=>"", :ps_fname=>"", :ps_flabel=>""}],
+       :existing_assignment_attributes => {
+           "1" => { :number => '1', :title => 'MyString', :ps_fname => 'assignment1.pdf', :ps_flabel => 'PDF'},
+           "2" => { :number => '1', :title => 'MyString', :ps_fname => 'assignment2.pdf', :ps_flabel => 'PDF'}}}}, false )
+    assert_response :success
+    assert assigns(:course).errors.on "assignments.number"
   end
   
   test "should update blurb" do

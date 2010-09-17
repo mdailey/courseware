@@ -73,9 +73,29 @@ class HandoutsControllerTest < ActionController::TestCase
   test "should update handouts" do
     login_as(:admin)
     assert_difference('Handout.count',0) do
-      put_record( {}, false )
+      put_record( { :course => {
+         :new_handout_attributes => [{:number=>"", :topic=>"", :file_name=>"", :file_label=>""}],
+         :existing_handout_attributes => {
+           "1" => {:number=>"1", :topic=>"MyString", :file_name=>"handout1.pdf", :file_label=>"PDF"},
+           "2"=>{:number=>"3", :topic=>"MyString2", :file_name=>"handout3.pdf", :file_label=>"PPT"}}}}, false )
     end
+    handout = Course.find(courses(:one).id).handouts.find(2).reload
+    assert_equal 3, handout.number
+    assert_equal 'MyString2', handout.topic
+    assert_equal 'handout3.pdf', handout.file_name
+    assert_equal 'PPT', handout.file_label
     assert_redirected_to edit_handouts_path({:course_id => 1})
+  end
+
+  test "should fail to update handouts" do
+    login_as(:admin)
+    put_record( { :course => {
+       :new_handout_attributes => [{:number=>"", :topic=>"", :file_name=>"", :file_label=>""}],
+       :existing_handout_attributes => {
+         "1" => {:number=>"1", :topic=>"MyString", :file_name=>"handout1.pdf", :file_label=>"PDF"},
+         "2" => {:number=>"1", :topic=>"MyString", :file_name=>"handout2.pdf", :file_label=>"PDF"}}}}, false )
+    assert_response :success
+    assert assigns(:course).errors.on "handouts.number"
   end
   
   test "should update blurb" do

@@ -1,18 +1,18 @@
 class Course < ActiveRecord::Base
-  has_many :menu_actions, :dependent => :destroy
-  has_many :lectures, :dependent => :destroy
-  has_many :announcements, :dependent => :destroy
-  has_many :blurbs, :dependent => :destroy
+  has_many :menu_actions, :autosave => true, :dependent => :destroy
+  has_many :lectures, :autosave => true, :dependent => :destroy
+  has_many :announcements, :autosave => true, :dependent => :destroy
+  has_many :blurbs, :autosave => true, :dependent => :destroy
   has_many :course_instructors, :autosave => true, :dependent => :destroy
   has_many :instructors, :through => :course_instructors, :source => :person
-  has_many :lecture_notes, :dependent => :destroy
+  has_many :lecture_notes, :autosave => true, :dependent => :destroy
   has_many :handouts, :autosave => true, :dependent => :destroy
-  has_many :course_readings, :dependent => :destroy
+  has_many :course_readings, :autosave => true, :dependent => :destroy
   has_many :readings, :through => :course_readings
-  has_many :course_resources, :dependent => :destroy
+  has_many :course_resources, :autosave => true, :dependent => :destroy
   has_many :resource_groups, :through => :course_resources
-  has_many :exams, :dependent => :destroy
-  has_many :assignments, :dependent => :destroy
+  has_many :exams, :autosave => true, :dependent => :destroy
+  has_many :assignments, :autosave => true, :dependent => :destroy
   
   validates_presence_of :year
   validates_presence_of :semester

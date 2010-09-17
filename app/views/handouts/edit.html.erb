@@ -12,7 +12,7 @@
       <tr><th>#</th><th>Topic</th><th>Label</th><th>Filename</th><th>File upload</th></tr>
     </thead>
     <tbody id="handouts_table">
-      <%= render :partial => "handout", :collection => @file_list %>
+      <%= render :partial => "handout", :collection => @file_list.sort {|h1,h2| (h1.new_record? ? 0 : h1.number) <=> (h2.new_record? ? 0 : h2.number)} %>
     </tbody>
   </table>
   <%= form.submit "Update handouts" %>

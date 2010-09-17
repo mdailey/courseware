@@ -70,14 +70,34 @@ class LectureNotesControllerTest < ActionController::TestCase
     assert_redirected_to edit_lecture_notes_path({:course_id => 1})
   end
 
-  test "should update lectures" do
+  test "should update lecture notes" do
     login_as(:admin)
     assert_difference('LectureNote.count',0) do
-      put_record( {}, false )
+      put_record( { :course => {
+         :new_lecture_note_attributes => [{:number=>"", :topic=>"", :file_name=>"", :file_label=>""}],
+         :existing_lecture_note_attributes => {
+           "1" => { :number => '1', :topic => 'MyString', :file_name => 'lecture_note1.pdf', :file_label => 'PDF'},
+           "2" => { :number => '3', :topic => 'MyString2', :file_name => 'lecture_note3.pdf', :file_label => 'PPT'}}}}, false )
     end
+    lecture_note = LectureNote.find(2).reload
+    assert_equal 3, lecture_note.number
+    assert_equal 'MyString2', lecture_note.topic
+    assert_equal 'lecture_note3.pdf', lecture_note.file_name
+    assert_equal 'PPT', lecture_note.file_label
     assert_redirected_to edit_lecture_notes_path({:course_id => 1})
   end
   
+  test "should fail to update lecture notes" do
+    login_as(:admin)
+    put_record( { :course => {
+       :new_lecture_note_attributes => [{:number=>"", :topic=>"", :file_name=>"", :file_label=>""}],
+       :existing_lecture_note_attributes => {
+         "1" => {:number=>"1", :topic=>"MyString", :file_name=>"handout1.pdf", :file_label=>"PDF"},
+         "2" => {:number=>"1", :topic=>"MyString", :file_name=>"handout2.pdf", :file_label=>"PDF"}}}}, false )
+    assert_response :success
+    assert assigns(:course).errors.on "lecture_notes.number"
+  end
+
   test "should update blurb" do
     login_as(:admin)
     put_record( {}, false, true, 'New blurb' )
