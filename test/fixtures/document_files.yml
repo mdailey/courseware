@@ -9,3 +9,13 @@ two:
   attachable_id: 2
   attachable_type: Assignment
   data: JVBERi0xLjQKJdDUxdgKMyAwIG9iaiA8PAovTGVuZ3RoIDMwNTM
+
+three:
+  attachable_id: 1
+  attachable_type: Handout
+  data: JVBERi0xLjQKJdDUxdgKMyAwIG9iaiA8PAovTGVuZ3RoIDMwNTM
+
+four:
+  attachable_id: 2
+  attachable_type: Handout
+  data: JVBERi0xLjQKJdDUxdgKMyAwIG9iaiA8PAovTGVuZ3RoIDMwNTM

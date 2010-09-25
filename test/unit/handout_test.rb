@@ -47,6 +47,9 @@ class HandoutTest < ActiveSupport::TestCase
       record.handout_file = HandoutFile.new
       record.handout_file.handout = record
       record.handout_file.file_data = 'abcdefg'
+      record.document_file = DocumentFile.new
+      record.document_file.attachable = record
+      record.document_file.data = 'abcdefg'
     end
     record.save
     record

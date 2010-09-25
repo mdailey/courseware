@@ -12,10 +12,8 @@ class HandoutsController < FileListController
   
   def set_file
     handout = @course.handouts.find(params[:id])
-    if handout and handout.handout_file
-      @file_data = handout.handout_file.file_data
-      @file_name = handout.file_name
-      @file_label = handout.file_label
+    if handout
+      @file_name, @file_label, @file_data = handout.document_info
     end
   end
   
