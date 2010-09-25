@@ -1,7 +1,11 @@
 module ApplicationHelper
   
   def render_blurb(blurb)
-    sanitize blurb.render_html
+    if blurb
+      sanitize blurb.render_html
+    else
+      ''
+    end
   end
   
   def render_blurb_edit_form(course_page, blurb)

@@ -16,6 +16,12 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:file_list)
   end
 
+  test "should get index for partial course" do
+    get :index, :course_id => 2
+    assert_response :success
+    assert_not_nil assigns(:file_list)
+  end
+  
   test "should show assignment" do
     get :show, :id => 1, :course_id => 1
     assert_response :success
