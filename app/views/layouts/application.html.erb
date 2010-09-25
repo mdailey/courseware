@@ -59,7 +59,7 @@
   
   <div id="content">
     <% if @course -%>
-      <h2><%= course_title(@course) %></h2>
+      <h2><%= @course.title %></h2>
     <% end -%>
     <% if notice -%>
       <p style="color: green"><%= notice %></p>

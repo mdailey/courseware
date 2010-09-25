@@ -14,7 +14,11 @@ class AssignmentsController < FileListController
   
   def set_file
     assignment = @course.assignments.find(params[:id])
-    if assignment and assignment.assignment_file
+    if assignment and assignment.document_file
+      @file_data = assignment.document_file.data
+      @file_name = assignment.ps_fname
+      @file_label = assignment.ps_flabel
+    elsif assignment and assignment.assignment_file
       @file_data = assignment.assignment_file.file_data
       @file_name = assignment.ps_fname
       @file_label = assignment.ps_flabel

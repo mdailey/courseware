@@ -26,6 +26,19 @@ class LectureNotesControllerTest < ActionController::TestCase
     get :show, :id => 1, :course_id => 1
     assert_response :success
   end
+
+  test "should fail to show lecture note without data" do
+    login_as(:admin)
+    assert_difference('LectureNote.count') do
+      put_record( {}, true )
+    end
+    assert_redirected_to edit_lecture_notes_path({:course_id => 1})
+    lecture_note = courses(:one).lecture_notes.find_by_number(6)
+    lecture_note.lecture_note_file.delete
+    assert_raise(RuntimeError) do
+      get :show, :id => lecture_note.to_param, :course_id => 1
+    end
+  end
   
   test "should get edit" do
     login_as(:admin)
@@ -95,7 +108,7 @@ class LectureNotesControllerTest < ActionController::TestCase
          "1" => {:number=>"1", :topic=>"MyString", :file_name=>"handout1.pdf", :file_label=>"PDF"},
          "2" => {:number=>"1", :topic=>"MyString", :file_name=>"handout2.pdf", :file_label=>"PDF"}}}}, false )
     assert_response :success
-    assert assigns(:course).errors.on "lecture_notes.number"
+    assert assigns(:course).errors.on("lecture_notes.number")
   end
 
   test "should update blurb" do

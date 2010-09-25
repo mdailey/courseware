@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  attachable_id: 1
+  attachable_type: Assignment
+  data: JVBERi0xLjQKJdDUxdgKMyAwIG9iaiA8PAovTGVuZ3RoIDMwNTM
+
+two:
+  attachable_id: 2
+  attachable_type: Assignment
+  data: JVBERi0xLjQKJdDUxdgKMyAwIG9iaiA8PAovTGVuZ3RoIDMwNTM

@@ -47,10 +47,10 @@ class CoursesControllerTest < ActionController::TestCase
       post :create, :course => { }
     end
     assert_response :success
-    assert assigns(:course).errors.on :year
-    assert assigns(:course).errors.on :semester
-    assert assigns(:course).errors.on :name
-    assert assigns(:course).errors.on :code
+    assert assigns(:course).errors.on(:year)
+    assert assigns(:course).errors.on(:semester)
+    assert assigns(:course).errors.on(:name)
+    assert assigns(:course).errors.on(:code)
   end
 
   test "should fail to create course" do

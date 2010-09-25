@@ -27,6 +27,24 @@ class AssignmentsControllerTest < ActionController::TestCase
     assert_response :success
   end
   
+  test "should fail to show assignment without data" do
+    login_as(:admin)
+    assert_difference('Assignment.count') do
+      put_record( {}, true )
+    end
+    assert_redirected_to edit_assignments_path({:course_id => 1})
+    assignment = courses(:one).assignments.find_by_number(6)
+    if assignment.document_file
+      assignment.document_file.delete
+    end
+    if assignment.assignment_file
+      assignment.assignment_file.delete
+    end
+    assert_raise(RuntimeError) do
+      get :show, :id => assignment.to_param, :course_id => 1
+    end
+  end
+
   test "should get edit" do
     login_as(:admin)
     get :edit, :course_id => courses(:one).to_param
@@ -95,7 +113,7 @@ class AssignmentsControllerTest < ActionController::TestCase
            "1" => { :number => '1', :title => 'MyString', :ps_fname => 'assignment1.pdf', :ps_flabel => 'PDF'},
            "2" => { :number => '1', :title => 'MyString', :ps_fname => 'assignment2.pdf', :ps_flabel => 'PDF'}}}}, false )
     assert_response :success
-    assert assigns(:course).errors.on "assignments.number"
+    assert assigns(:course).errors.on("assignments.number")
   end
   
   test "should update blurb" do
@@ -124,7 +142,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     params = { :course => {
       :new_assignment_attributes => new ?
         [{ :number => '6', :title => 'Syllabus', :ps_fname => 'syllabus.pdf', :ps_flabel => 'PDF',
-           :assignment_file => file }] :
+           :document_file => file }] :
         [{ :number => '', :title => '', :ps_fname => '', :ps_flabel => ''}],
       :existing_assignment_attributes => existing ?
         {"1" => { :number => '1', :title => 'MyString', :ps_fname => 'assignment1.pdf', :ps_flabel => 'PDF'},

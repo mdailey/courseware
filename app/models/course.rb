@@ -139,6 +139,14 @@ class Course < ActiveRecord::Base
         assignment_file = AssignmentFile.new
         assignment_file.file_data = Base64.encode64 file_data
       end
+      if attributes[:document_file]
+        attributes[:ps_fname] = attributes[:document_file].original_filename
+        file_data = attributes[:document_file].read
+        attributes[:document_file].delete
+        attributes.delete(:document_file)
+        document_file = DocumentFile.new
+        document_file.data = Base64.encode64 file_data
+      end
       if (attributes[:number] and attributes[:number].length) > 0 or
          (attributes[:title] and attributes[:title].length > 0)
         assignments.build(attributes)
@@ -146,6 +154,11 @@ class Course < ActiveRecord::Base
           assignment = assignments.select {|h| h.new_record?}.first
           assignment.assignment_file = assignment_file
           assignment.assignment_file.assignment = assignment
+        end
+        if document_file
+          assignment = assignments.select {|h| h.new_record?}.first
+          assignment.document_file = document_file
+          assignment.document_file.attachable = assignment
         end
       end
     end
@@ -207,18 +220,24 @@ class Course < ActiveRecord::Base
       if attributes
         file_data = nil
         if attributes[:assignment_file]
-          attributes[:file_name] = attributes[:assignment_file].original_filename
+          attributes[:ps_fname] = attributes[:assignment_file].original_filename
           file_data = attributes[:assignment_file].read
           attributes[:assignment_file].delete
           attributes.delete(:assignment_file)
         end
+        if attributes[:document_file]
+          attributes[:ps_fname] = attributes[:document_file].original_filename
+          file_data = attributes[:document_file].read
+          attributes[:document_file].delete
+          attributes.delete(:document_file)
+        end
         assignment.attributes = attributes
         if file_data
-          if !assignment.assignment_file
-            assignment.assignment_file = AssignmentFile.new
-            assignment.assignment_file.assignment = assignment
+          if !assignment.document_file
+            assignment.document_file = DocumentFile.new
+            assignment.document_file.assignment = assignment
           end
-          assignment.assignment_file.file_data = Base64.encode64 file_data
+          assignment.document_file.data = Base64.encode64 file_data
         end  
       else
         assignments.delete(assignment)
@@ -335,4 +354,13 @@ class Course < ActiveRecord::Base
     self.year = time.year
   end
   
+  def title
+    if self.code and self.name and self.semester and self.year
+      self.code + ': ' + self.name + ', ' + self.semester + ' ' + self.year.to_s
+    else
+      'New course'
+    end
+  end
+
+
 end

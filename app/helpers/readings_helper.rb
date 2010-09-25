@@ -46,7 +46,7 @@ module ReadingsHelper
   def reading_cover(reading)
     html = ''
     if reading and reading.image_url and reading.image_url.length > 0
-      html = %Q(<img class="readingimg" src="#{BOOK_IMAGE_URL_PREFIX + '/' + reading.image_url}" alt="Book cover for #{reading.title}"/>)
+      html = %Q(<img class="readingimg" src="#{BOOK_IMAGE_URL_PREFIX + '/' + reading.image_url}" alt="Book cover for #{reading.title}">)
       if reading.sales_info_url
         html = %Q(<a href="#{reading.sales_info_url}">#{html}</a>)
       end

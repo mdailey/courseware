@@ -3,7 +3,7 @@ class CreateAssignments < ActiveRecord::Migration
     create_table :assignments do |t|
       t.integer :course_id
       t.integer :number
-      t.integer :title
+      t.string :title
       t.string :ps_flabel
       t.string :ps_fname
       t.string :soln_flabel
