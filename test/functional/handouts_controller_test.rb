@@ -34,7 +34,6 @@ class HandoutsControllerTest < ActionController::TestCase
     end
     assert_redirected_to edit_handouts_path({:course_id => 1})
     handout = courses(:one).handouts.find_by_number(6)
-    handout.handout_file.delete
     handout.document_file.delete
     assert_raise(RuntimeError) do
       get :show, :id => handout.to_param, :course_id => 1
@@ -138,7 +137,7 @@ class HandoutsControllerTest < ActionController::TestCase
     params = { :course => {
       :new_handout_attributes => new ?
         [{ :number => '6', :topic => 'Syllabus', :file_name => 'syllabus.pdf', :file_label => 'PDF',
-           :handout_file => file, :document_file => file }] :
+           :document_file => file }] :
         [{ :number => '', :topic => '', :file_name => '', :file_label => ''}],
       :existing_handout_attributes => existing ?
         {"1" => { :number => '1', :topic => 'MyString', :file_name => 'handout1.pdf', :file_label => 'PDF'},

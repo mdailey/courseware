@@ -84,14 +84,6 @@ class Course < ActiveRecord::Base
 
   def new_handout_attributes=(handout_attributes)
     handout_attributes.each do |attributes|
-      handout_file = nil
-      if attributes[:handout_file]
-        attributes[:file_name] = attributes[:handout_file].original_filename
-        file_data = attributes[:handout_file].read
-        attributes.delete(:handout_file)
-        handout_file = HandoutFile.new
-        handout_file.file_data = Base64.encode64 file_data
-      end
       document_file = nil
       if attributes[:document_file]
         attributes[:file_name] = attributes[:document_file].original_filename
@@ -104,11 +96,6 @@ class Course < ActiveRecord::Base
       if (attributes[:number] and attributes[:number].length) > 0 or
          (attributes[:topic] and attributes[:topic].length > 0)
         handouts.build(attributes)
-        if handout_file
-          handout = handouts.select {|h| h.new_record?}.first
-          handout.handout_file = handout_file
-          handout.handout_file.handout = handout
-        end
         if document_file
           handout = handouts.select {|h| h.new_record?}.first
           handout.document_file = document_file
@@ -168,12 +155,6 @@ class Course < ActiveRecord::Base
       attributes = handout_attributes[handout.id.to_s]
       if attributes
         file_data = nil
-        if attributes[:handout_file]
-          attributes[:file_name] = attributes[:handout_file].original_filename
-          file_data = attributes[:handout_file].read
-          attributes[:handout_file].delete
-          attributes.delete(:handout_file)
-        end
         if attributes[:document_file]
           attributes[:file_name] = attributes[:document_file].original_filename
           file_data = attributes[:document_file].read
@@ -182,11 +163,6 @@ class Course < ActiveRecord::Base
         end
         handout.attributes = attributes
         if file_data
-          if !handout.handout_file
-            handout.handout_file = HandoutFile.new
-            handout.handout_file.handout = handout
-          end
-          handout.handout_file.file_data = Base64.encode64 file_data
           if !handout.document_file
             handout.document_file = DocumentFile.new
             handout.document_file.attachable = handout
