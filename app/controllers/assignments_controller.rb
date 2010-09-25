@@ -1,7 +1,5 @@
 class AssignmentsController < FileListController
 
-#      send_data Base64.decode64( file.file_data ), :filename => @assignment.ps_fname, :type => mimetype(@assignment.ps_flabel)
-
   protected
   
   def find_file_list
@@ -14,14 +12,8 @@ class AssignmentsController < FileListController
   
   def set_file
     assignment = @course.assignments.find(params[:id])
-    if assignment and assignment.document_file
-      @file_data = assignment.document_file.data
-      @file_name = assignment.ps_fname
-      @file_label = assignment.ps_flabel
-    elsif assignment and assignment.assignment_file
-      @file_data = assignment.assignment_file.file_data
-      @file_name = assignment.ps_fname
-      @file_label = assignment.ps_flabel
+    if assignment
+      @file_name, @file_label, @file_data = assignment.document_info
     end
   end
   

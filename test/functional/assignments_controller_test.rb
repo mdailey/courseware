@@ -43,9 +43,6 @@ class AssignmentsControllerTest < ActionController::TestCase
     if assignment.document_file
       assignment.document_file.delete
     end
-    if assignment.assignment_file
-      assignment.assignment_file.delete
-    end
     assert_raise(RuntimeError) do
       get :show, :id => assignment.to_param, :course_id => 1
     end

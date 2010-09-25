@@ -130,15 +130,6 @@ class Course < ActiveRecord::Base
 
   def new_assignment_attributes=(new_attributes)
     new_attributes.each do |attributes|
-      assignment_file = nil
-      if attributes[:assignment_file]
-        attributes[:ps_fname] = attributes[:assignment_file].original_filename
-        file_data = attributes[:assignment_file].read
-        attributes[:assignment_file].delete
-        attributes.delete(:assignment_file)
-        assignment_file = AssignmentFile.new
-        assignment_file.file_data = Base64.encode64 file_data
-      end
       if attributes[:document_file]
         attributes[:ps_fname] = attributes[:document_file].original_filename
         file_data = attributes[:document_file].read
@@ -150,11 +141,6 @@ class Course < ActiveRecord::Base
       if (attributes[:number] and attributes[:number].length) > 0 or
          (attributes[:title] and attributes[:title].length > 0)
         assignments.build(attributes)
-        if assignment_file
-          assignment = assignments.select {|h| h.new_record?}.first
-          assignment.assignment_file = assignment_file
-          assignment.assignment_file.assignment = assignment
-        end
         if document_file
           assignment = assignments.select {|h| h.new_record?}.first
           assignment.document_file = document_file
@@ -219,12 +205,6 @@ class Course < ActiveRecord::Base
       attributes = assignment_attributes[assignment.id.to_s]
       if attributes
         file_data = nil
-        if attributes[:assignment_file]
-          attributes[:ps_fname] = attributes[:assignment_file].original_filename
-          file_data = attributes[:assignment_file].read
-          attributes[:assignment_file].delete
-          attributes.delete(:assignment_file)
-        end
         if attributes[:document_file]
           attributes[:ps_fname] = attributes[:document_file].original_filename
           file_data = attributes[:document_file].read
