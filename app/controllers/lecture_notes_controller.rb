@@ -12,10 +12,8 @@ class LectureNotesController < FileListController
   
   def set_file
     lecture_note = @course.lecture_notes.find(params[:id])
-    if lecture_note and lecture_note.lecture_note_file
-      @file_data = lecture_note.lecture_note_file.file_data
-      @file_name = lecture_note.file_name
-      @file_label = lecture_note.file_label
+    if lecture_note
+      @file_name, @file_label, @file_data = lecture_note.document_info
     end
   end
   

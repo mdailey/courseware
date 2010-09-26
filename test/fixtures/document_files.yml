@@ -19,3 +19,13 @@ four:
   attachable_id: 2
   attachable_type: Handout
   data: JVBERi0xLjQKJdDUxdgKMyAwIG9iaiA8PAovTGVuZ3RoIDMwNTM
+
+five:
+  attachable_id: 1
+  attachable_type: LectureNote
+  data: JVBERi0xLjQKJdDUxdgKMyAwIG9iaiA8PAovTGVuZ3RoIDMwNTM
+
+siz:
+  attachable_id: 2
+  attachable_type: LectureNote
+  data: JVBERi0xLjQKJdDUxdgKMyAwIG9iaiA8PAovTGVuZ3RoIDMwNTM

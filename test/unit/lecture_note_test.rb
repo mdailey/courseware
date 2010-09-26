@@ -29,11 +29,17 @@ class LectureNoteTest < ActiveSupport::TestCase
 
   private
   
-  def create_record(options = {})
+  def create_record(options = {}, create_document_file = true)
     record = LectureNote.new({ :course_id => 2, :number => 1,
                                :topic => 'Geometry', :file_label => 'PDF',
                                :file_name => 'syllabus.pdf' }.merge(options))
+    if create_document_file
+      record.document_file = DocumentFile.new
+      record.document_file.attachable = record
+      record.document_file.data = 'abcdefg'
+    end
     record.save
     record
   end
+
 end

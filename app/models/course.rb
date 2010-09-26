@@ -106,28 +106,13 @@ class Course < ActiveRecord::Base
   end
    
   def new_lecture_note_attributes=(new_attributes)
-    new_attributes.each do |attributes|
-      lecture_note_file = nil
-      if attributes[:lecture_note_file]
-        attributes[:file_name] = attributes[:lecture_note_file].original_filename
-        file_data = attributes[:lecture_note_file].read
-        attributes[:lecture_note_file].delete
-        attributes.delete(:lecture_note_file)
-        lecture_note_file = LectureNoteFile.new
-        lecture_note_file.file_data = Base64.encode64 file_data
-      end
-      if (attributes[:number] and attributes[:number].length) > 0 or
-         (attributes[:topic] and attributes[:topic].length > 0)
-        lecture_notes.build(attributes)
-        if lecture_note_file
-          lecture_note = lecture_notes.select {|h| h.new_record?}.first
-          lecture_note.lecture_note_file = lecture_note_file
-          lecture_note.lecture_note_file.lecture_note = lecture_note
-        end
-      end
-    end
+    LectureNote.post_from_attributes(self, new_attributes)
   end
 
+  def existing_lecture_note_attributes=(lecture_note_attributes)
+    LectureNote.update_from_attributes(self, lecture_note_attributes)
+  end
+  
   def new_assignment_attributes=(new_attributes)
     new_attributes.each do |attributes|
       if attributes[:document_file]
@@ -171,31 +156,6 @@ class Course < ActiveRecord::Base
         end  
       else
         handouts.delete(handout)
-      end
-    end
-  end
-  
-  def existing_lecture_note_attributes=(lecture_note_attributes)
-    lecture_notes.reject(&:new_record?).each do |lecture_note|
-      attributes = lecture_note_attributes[lecture_note.id.to_s]
-      if attributes
-        file_data = nil
-        if attributes[:lecture_note_file]
-          attributes[:file_name] = attributes[:lecture_note_file].original_filename
-          file_data = attributes[:lecture_note_file].read
-          attributes[:lecture_note_file].delete
-          attributes.delete(:lecture_note_file)
-        end
-        lecture_note.attributes = attributes
-        if file_data
-          if !lecture_note.lecture_note_file
-            lecture_note.lecture_note_file = LectureNoteFile.new
-            lecture_note.lecture_note_file.lecture_note = lecture_note
-          end
-          lecture_note.lecture_note_file.file_data = Base64.encode64 file_data
-        end  
-      else
-        lecture_notes.delete(lecture_note)
       end
     end
   end

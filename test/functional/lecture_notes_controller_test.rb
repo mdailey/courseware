@@ -35,6 +35,7 @@ class LectureNotesControllerTest < ActionController::TestCase
     assert_redirected_to edit_lecture_notes_path({:course_id => 1})
     lecture_note = courses(:one).lecture_notes.find_by_number(6)
     lecture_note.lecture_note_file.delete
+    lecture_note.document_file.delete
     assert_raise(RuntimeError) do
       get :show, :id => lecture_note.to_param, :course_id => 1
     end
@@ -137,7 +138,7 @@ class LectureNotesControllerTest < ActionController::TestCase
     params = { :course => {
       :new_lecture_note_attributes => new ?
         [{ :number => '6', :topic => 'Syllabus', :file_name => 'syllabus.pdf', :file_label => 'PDF',
-           :lecture_note_file => file }] :
+           :lecture_note_file => file, :document_file => file }] :
         [{ :number => '', :topic => '', :file_name => '', :file_label => ''}],
       :existing_lecture_note_attributes => existing ?
         {"1" => { :number => '1', :topic => 'MyString', :file_name => 'lecture_note1.pdf', :file_label => 'PDF'},
