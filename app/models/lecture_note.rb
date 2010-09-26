@@ -1,6 +1,5 @@
 class LectureNote < ActiveRecord::Base
   belongs_to :course
-  has_one :lecture_note_file, :autosave => true, :dependent => :destroy
   has_one :document_file, :as => :attachable, :autosave => true, :dependent => :destroy
 
   validates_presence_of :course
@@ -12,14 +11,6 @@ class LectureNote < ActiveRecord::Base
 
   def self.post_from_attributes(course, new_attributes)
     new_attributes.each do |attributes|
-      lecture_note_file = nil
-      if attributes[:lecture_note_file]
-        attributes[:file_name] = attributes[:lecture_note_file].original_filename
-        file_data = attributes[:lecture_note_file].read
-        attributes.delete(:lecture_note_file)
-        lecture_note_file = LectureNoteFile.new
-        lecture_note_file.file_data = Base64.encode64 file_data
-      end
       document_file = nil
       if attributes[:document_file]
         attributes[:file_name] = attributes[:document_file].original_filename
@@ -32,11 +23,6 @@ class LectureNote < ActiveRecord::Base
       if (attributes[:number] and attributes[:number].length) > 0 or
          (attributes[:topic] and attributes[:topic].length > 0)
         course.lecture_notes.build(attributes)
-        if lecture_note_file
-          lecture_note = course.lecture_notes.select {|h| h.new_record?}.first
-          lecture_note.lecture_note_file = lecture_note_file
-          lecture_note.lecture_note_file.lecture_note = lecture_note
-        end
         if document_file
           lecture_note = course.lecture_notes.select {|h| h.new_record?}.first
           lecture_note.document_file = document_file
@@ -51,11 +37,6 @@ class LectureNote < ActiveRecord::Base
       attributes = lecture_note_attributes[lecture_note.id.to_s]
       if attributes
         file_data = nil
-        if attributes[:lecture_note_file]
-          attributes[:file_name] = attributes[:lecture_note_file].original_filename
-          file_data = attributes[:lecture_note_file].read
-          attributes.delete(:lecture_note_file)
-        end
         if attributes[:document_file]
           attributes[:file_name] = attributes[:document_file].original_filename
           file_data = attributes[:document_file].read
@@ -64,11 +45,6 @@ class LectureNote < ActiveRecord::Base
         end
         lecture_note.attributes = attributes
         if file_data
-          if !lecture_note.lecture_note_file
-            lecture_note.lecture_note_file = LectureNoteFile.new
-            lecture_note.lecture_note_file.lecture_note = lecture_note
-          end
-          lecture_note.lecture_note_file.file_data = Base64.encode64 file_data
           if !lecture_note.document_file
             lecture_note.document_file = DocumentFile.new
             lecture_note.document_file.attachable = lecture_note
