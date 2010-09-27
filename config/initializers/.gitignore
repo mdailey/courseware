@@ -1,3 +1,3 @@
 site_keys.rb
 cookie_verification_secret.rb
-session_store.rb
+session_key.rb
