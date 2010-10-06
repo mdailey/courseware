@@ -88,16 +88,17 @@ class LecturesController < ApplicationController
   def setup_for_edit
     @use_jqgrid = true
     
-    @page = params[:page]
+    page = @page = params[:page]
 
-    @rows = params[:rows]
-    if !@rows || @rows.length == 0 || @rows.to_i <= 0
+    rows = params[:rows]
+    if !rows || rows.length == 0 || rows.to_i <= 0
       if @course.lectures.count > 0
-        @rows = @course.lectures.count
+        rows = @course.lectures.count
       else
-        @rows = 20
+        rows = 20
       end
     end
+    @rows = rows
 
     sidx = params[:sidx]
     if !sidx or sidx.length == 0
@@ -108,17 +109,16 @@ class LecturesController < ApplicationController
     if !sord or sord.length == 0
       sord = "asc"
     end
- 
+
     @course_lectures = @course.lectures.find(:all) do
       if params[:_search] == "true"
         number               == params[:number].to_i if params[:number].present?
         topics               =~ "%#{params[:topics]}%" if params[:topics].present?
         readings             =~ "%#{params[:readings]}%" if params[:readings].present?
       end
-      paginate :page => @page, :rows => @rows
+      paginate({:page => page, :per_page => rows})
       order_by "#{sidx} #{sord}"
     end
-
   end
 
 end
